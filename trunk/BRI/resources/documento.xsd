@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ABSTRACT">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="AUTHOR">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="AUTHORS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AUTHOR" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="CITATIONS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CITE" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="CITE">
+    <xs:complexType>
+      <xs:attribute name="publication" type="xs:string" use="required" />
+      <xs:attribute name="num" type="xs:string" use="required" />
+      <xs:attribute name="d3" type="xs:string" use="required" />
+      <xs:attribute name="author" type="xs:string" use="required" />
+      <xs:attribute name="d2" type="xs:string" use="required" />
+      <xs:attribute name="d1" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EXTRACT">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="FILE">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="RECORD" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MAJORSUBJ">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TOPIC" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MEDLINENUM">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="MINORSUBJ">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TOPIC" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PAPERNUM">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="RECORD">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="PAPERNUM" />
+        <xs:element ref="REFERENCES" />
+        <xs:element ref="RECORDNUM" />
+        <xs:element ref="MEDLINENUM" />
+        <xs:element ref="AUTHORS" />
+        <xs:element ref="TITLE" />
+        <xs:element ref="SOURCE" />
+        <xs:element ref="MAJORSUBJ" />
+        <xs:element ref="MINORSUBJ" />
+        <xs:element ref="ABSTRACT" />
+        <xs:element ref="CITATIONS" />
+        <xs:element ref="EXTRACT" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="RECORDNUM">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="REFERENCES">
+    <xs:complexType mixed="true">
+      <xs:choice>
+        <xs:element ref="CITE" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SOURCE">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="TITLE">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="TOPIC">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+</xs:schema>
