@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="FILEQUERY">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="QUERY" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Item">
+    <xs:complexType mixed="true">
+      <xs:attribute name="score" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="QUERY">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="QueryNumber" />
+        <xs:element ref="QueryText" />
+        <xs:element ref="Results" />
+        <xs:element ref="Records" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="QueryNumber">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="QueryText">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Records">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Item" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Results">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+</xs:schema>
