@@ -4,10 +4,15 @@ public class Record {
 	private int id;
 	private String titulo;
 	private String resumo;
+	/*
+	 * TODO Manter o nome 'xml' ou modificar para 'dados'? Acho que
+	 * 'xml' ficou muito abstrato, dá a idéia do todo, e 'dados' é
+	 * só aquele trecho do record, que é o que está sendo persistido...
+	 */
 	private String xml;
 	
 	public Record() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public Record(int id, String titulo, String resumo, String xml) {
@@ -16,31 +21,37 @@ public class Record {
 		this.resumo = resumo;
 		this.xml = xml;
 	}
+	
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public String getTitulo() {
 		return titulo;
 	}
+	
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
+	
 	public String getResumo() {
 		return resumo;
 	}
+	
 	public void setResumo(String resumo) {
 		this.resumo = resumo;
 	}
+	
 	public String getXml() {
 		return xml;
 	}
+	
 	public void setXml(String xml) {
 		this.xml = xml;
-	} 
-	
-	
+	}
 
 }
