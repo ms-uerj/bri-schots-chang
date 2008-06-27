@@ -5,12 +5,13 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import br.ufrj.cos.disciplina.bri.algorithm.PrecisionRecall;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 import br.ufrj.cos.disciplina.bri.persistence.JPAResourceBean;
 import br.ufrj.cos.disciplina.bri.persistence.TestConnection;
 
-public class LoadData {
+public class Main {
 
 	/**
 	 * @param args
@@ -21,24 +22,24 @@ public class LoadData {
 		connection.test();
 
 		// Lista de Records
-		List<Record> listaRecords = new ArrayList<Record>();
+		List<Record> listRecords = new ArrayList<Record>();
 		// Lista de Queries
-		List<Query> listaQueries = new ArrayList<Query>();
+		List<Query> listQueries = new ArrayList<Query>();
 
-		listaRecords.addAll(Record
+		listRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf74.xml"));
-		listaRecords.addAll(Record
+		listRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf75.xml"));
-		listaRecords.addAll(Record
+		listRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf76.xml"));
-		listaRecords.addAll(Record
+		listRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf77.xml"));
-		listaRecords.addAll(Record
+		listRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf78.xml"));
-		listaRecords.addAll(Record
+		listRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf79.xml"));
 		
-		listaQueries.addAll(Query.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
+		listQueries.addAll(Query.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
 
 		JPAResourceBean jpaResourceBean = new JPAResourceBean();
 		EntityManager em = jpaResourceBean.getEMF("mysql")
@@ -46,18 +47,25 @@ public class LoadData {
 		try {
 			em.getTransaction().begin();
 
-			for (int i = 0; i < listaRecords.size(); i++) {
-				em.persist(listaRecords.get(i));
+			for (int i = 0; i < listRecords.size(); i++) {
+				em.persist(listRecords.get(i));
 			}
 			
-			for (int i = 0; i < listaQueries.size(); i++) {
-				em.persist(listaQueries.get(i));
+			for (int i = 0; i < listQueries.size(); i++) {
+				em.persist(listQueries.get(i));
 			}
 
 			em.getTransaction().commit();
 		} finally {
 			em.close();
 		}
+		
+		for (int i = 0; i < listQueries.size(); i++) {
+			//Query query = ;
+			PrecisionRecall.getPrecisionRecall("BOOLEAN", listQueries.get(i), "ABSTRACT");
+		}
+		
+		
 
 		System.out.println("Fim");
 
