@@ -57,6 +57,14 @@ public class Query {
 	public void setQuestion(String question) {
 		this.question = question;
 	}
+	
+	public void setEvaluations(List<Evaluation> evaluations) {
+		this.evaluations = evaluations;
+	}
+	
+	public List<Evaluation> getEvaluations() {
+		return evaluations;
+	}
 
 	public static List<Query> parseQueryFromXML(String path) {
 		List<Query> listaQueries = new ArrayList<Query>();
