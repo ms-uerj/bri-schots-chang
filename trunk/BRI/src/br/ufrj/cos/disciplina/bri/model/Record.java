@@ -1,15 +1,27 @@
 package br.ufrj.cos.disciplina.bri.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import org.hibernate.validator.Length;
+
+@Entity
 public class Record {
+	
+	@Id
 	private int id;
-	private String titulo;
-	private String resumo;
+	@Column(length=500)
+	private String title;
+	@Column(length=500)
+	private String abztract;
 	/*
 	 * TODO Manter o nome 'xml' ou modificar para 'dados'? Acho que
 	 * 'xml' ficou muito abstrato, dá a idéia do todo, e 'dados' é
 	 * só aquele trecho do record, que é o que está sendo persistido...
 	 */
-	private String xml;
+	@Column(length=500)
+	private String record;
 	
 	public Record() {
 
@@ -17,9 +29,9 @@ public class Record {
 	
 	public Record(int id, String titulo, String resumo, String xml) {
 		this.id = id;
-		this.titulo = titulo;
-		this.resumo = resumo;
-		this.xml = xml;
+		this.title = titulo;
+		this.abztract = resumo;
+		this.record = xml;
 	}
 	
 	public int getId() {
@@ -31,27 +43,27 @@ public class Record {
 	}
 	
 	public String getTitulo() {
-		return titulo;
+		return title;
 	}
 	
 	public void setTitulo(String titulo) {
-		this.titulo = titulo;
+		this.title = titulo;
 	}
 	
 	public String getResumo() {
-		return resumo;
+		return abztract;
 	}
 	
 	public void setResumo(String resumo) {
-		this.resumo = resumo;
+		this.abztract = resumo;
 	}
 	
 	public String getXml() {
-		return xml;
+		return record;
 	}
 	
 	public void setXml(String xml) {
-		this.xml = xml;
+		this.record = xml;
 	}
 
 }
