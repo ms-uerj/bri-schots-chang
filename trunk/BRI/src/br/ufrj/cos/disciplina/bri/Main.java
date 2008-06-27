@@ -20,15 +20,14 @@ import br.ufrj.cos.disciplina.bri.persistence.JPAResourceBean;
 import br.ufrj.cos.disciplina.bri.persistence.TestConnection;
 
 
-
 public class Main {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		//Lista de Records
+
+		// lista de records
 		List<Record> listaRecords = new ArrayList<Record>();
 
 		// objetos necessários à leitura do XML
@@ -36,31 +35,31 @@ public class Main {
 		DocumentBuilder db;
 		Document myDoc;
 
-		// lista de registros (records) do XML
+		// lista de nós record (dados do XML)
 		NodeList listRecords;
 
 		try {
 			db = dbf.newDocumentBuilder();
 			myDoc = db.parse(new File("resources/inputs/cf74.xml"));
-			
-			// inicialização da lista de registros
+
+			// inicialização da lista de nós record
 			listRecords = myDoc.getElementsByTagName("RECORD");
-			
+
 			for (int i = 0; i < listRecords.getLength(); i++) {
-				
+
 				// instancia o record a ser persistido
 				Record record = new Record();
-				
+
 				// captura o record e seu conteúdo
-				Node nodeRecord = listRecords.item(i); // TODO mudar de 1 pra i
+				Node nodeRecord = listRecords.item(i);
 				NodeList recordContents = nodeRecord.getChildNodes();
-				
+
 				// percorre o conteúdo capturado do record
 				for (int j = 0; j < recordContents.getLength(); j++) {
-					
+
 					// captura o item do record
 					Node recordItem = recordContents.item(j);
-					
+
 					// captura o item conforme seu nome
 					if (recordItem.getFirstChild() != null) {
 						/* TODO todo o conteúdo do XML relativo 
@@ -73,12 +72,12 @@ public class Main {
 					} else if (recordItem.getNodeName().equals("TITLE")){
 						record.setTitulo(recordItem.getFirstChild().getNodeValue());
 					} else if (recordItem.getNodeName().equals("ABSTRACT")){
-						record.setResumo(recordItem.getFirstChild().getNodeValue());
+						record.setAbztract(recordItem.getFirstChild().getNodeValue());
 					}
 				}
 
 				// persiste o conteúdo capturado do record
-				record.setXml(null); // TODO aqui será colocado o que for capturado acima
+				record.setRecordData(null); // TODO aqui será colocado o que for capturado acima
 				listaRecords.add(record);
 			}
 		} catch (SAXException e) {
@@ -88,23 +87,22 @@ public class Main {
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		}
-		
+
 		JPAResourceBean jpaResourceBean = new JPAResourceBean();
 		EntityManager em = jpaResourceBean.getEMF("mysql").createEntityManager();
-	    try{
-	        em.getTransaction().begin();
-	        
-	        for (int i = 0; i < listaRecords.size(); i++) {
+		try {
+			em.getTransaction().begin();
+
+			for (int i = 0; i < listaRecords.size(); i++) {
 				em.persist(listaRecords.get(i));
 			}
-	        
-	        em.getTransaction().commit();
-	    }finally{
-	        em.close();
-	    }
-		
-		System.out.println("Fim");
 
+			em.getTransaction().commit();
+		} finally {
+			em.close();
+		}
+
+		System.out.println("Fim");
 	}
 
 }
