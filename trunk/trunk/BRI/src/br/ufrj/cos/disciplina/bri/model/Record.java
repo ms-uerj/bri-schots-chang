@@ -27,16 +27,14 @@ import org.xml.sax.SAXException;
 @Entity
 public class Record {
 
-	@Id
+	@Id@Column(name = "QUERY_ID")
 	private int id;
 	@Column(name = "TITLE", length = 500)
 	private String title;
 	@Column(name = "ABSTRACT", length = 500)
 	private String abztract;
-	@Column(length = 500)
+	@Column(name = "DATA",length = 500)
 	private String data;
-	@Transient
-	private Document document;
 
 	public Record() {
 

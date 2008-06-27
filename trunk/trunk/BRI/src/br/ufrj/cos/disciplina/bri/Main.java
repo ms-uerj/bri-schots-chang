@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 import br.ufrj.cos.disciplina.bri.persistence.JPAResourceBean;
 import br.ufrj.cos.disciplina.bri.persistence.TestConnection;
@@ -21,6 +22,8 @@ public class Main {
 
 		// Lista de Records
 		List<Record> listaRecords = new ArrayList<Record>();
+		// Lista de Queries
+		List<Query> listaQueries = new ArrayList<Query>();
 
 		listaRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf74.xml"));
@@ -34,6 +37,8 @@ public class Main {
 				.parseRecordFromXML("resources/inputs/cf78.xml"));
 		listaRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf79.xml"));
+		
+		listaQueries.addAll(Query.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
 
 		JPAResourceBean jpaResourceBean = new JPAResourceBean();
 		EntityManager em = jpaResourceBean.getEMF("mysql")
@@ -43,6 +48,10 @@ public class Main {
 
 			for (int i = 0; i < listaRecords.size(); i++) {
 				em.persist(listaRecords.get(i));
+			}
+			
+			for (int i = 0; i < listaQueries.size(); i++) {
+				em.persist(listaQueries.get(i));
 			}
 
 			em.getTransaction().commit();

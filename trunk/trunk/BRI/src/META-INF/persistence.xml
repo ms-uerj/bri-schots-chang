@@ -8,6 +8,8 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		
 		<class>br.ufrj.cos.disciplina.bri.model.Record</class>
+		<class>br.ufrj.cos.disciplina.bri.model.Query</class>
+		<class>br.ufrj.cos.disciplina.bri.model.Evaluation</class>
 		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
