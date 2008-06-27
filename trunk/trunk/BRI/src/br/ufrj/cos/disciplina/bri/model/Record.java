@@ -15,23 +15,18 @@ public class Record {
 	private String title;
 	@Column(length=500)
 	private String abztract;
-	/*
-	 * TODO Manter o nome 'xml' ou modificar para 'dados'? Acho que
-	 * 'xml' ficou muito abstrato, dá a idéia do todo, e 'dados' é
-	 * só aquele trecho do record, que é o que está sendo persistido...
-	 */
 	@Column(length=500)
-	private String record;
+	private String recordData;
 	
 	public Record() {
 
 	}
 	
-	public Record(int id, String titulo, String resumo, String xml) {
+	public Record(int id, String titulo, String abztract, String recordData) {
 		this.id = id;
 		this.title = titulo;
-		this.abztract = resumo;
-		this.record = xml;
+		this.abztract = abztract;
+		this.recordData = recordData;
 	}
 	
 	public int getId() {
@@ -50,20 +45,20 @@ public class Record {
 		this.title = titulo;
 	}
 	
-	public String getResumo() {
+	public String getAbztract() {
 		return abztract;
 	}
 	
-	public void setResumo(String resumo) {
-		this.abztract = resumo;
+	public void setAbztract(String abztract) {
+		this.abztract = abztract;
 	}
 	
-	public String getXml() {
-		return record;
+	public String getRecordData() {
+		return recordData;
 	}
 	
-	public void setXml(String xml) {
-		this.record = xml;
+	public void setRecordData(String recordData) {
+		this.recordData = recordData;
 	}
 
 }
