@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 @Entity
 public class Record {
 
-	@Id@Column(name = "QUERY_ID")
+	@Id@Column(name = "RECORD_ID")
 	private int id;
 	@Column(name = "TITLE", length = 500)
 	private String title;

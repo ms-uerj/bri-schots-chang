@@ -10,7 +10,7 @@ import br.ufrj.cos.disciplina.bri.model.Record;
 import br.ufrj.cos.disciplina.bri.persistence.JPAResourceBean;
 import br.ufrj.cos.disciplina.bri.persistence.TestConnection;
 
-public class Main {
+public class LoadData {
 
 	/**
 	 * @param args

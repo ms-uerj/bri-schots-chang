@@ -2,6 +2,7 @@ package br.ufrj.cos.disciplina.bri.persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class TestConnection {
 	DB db;
@@ -13,7 +14,7 @@ public class TestConnection {
 	public void test() {
 		db.dbConnect("jdbc:mysql://localhost/bri", "root", "admin");
 	}
-
+	
 }
 
 class DB {
