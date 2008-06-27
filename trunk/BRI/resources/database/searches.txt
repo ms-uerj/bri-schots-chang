@@ -1,0 +1,9 @@
+SELECT * FROM record
+	WHERE MATCH (DATA)
+	AGAINST ('what' IN BOOLEAN MODE);
+	
+	
+SELECT *
+FROM query as q, query_evaluation as qe, evaluation as e
+WHERE q.id = qe.Query_id and e.id = qe.evaluations_id and q.id = 1;
+
