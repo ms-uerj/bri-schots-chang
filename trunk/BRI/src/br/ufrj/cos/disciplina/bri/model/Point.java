@@ -11,54 +11,61 @@ public class Point {
 		
 	}
 	
-	public Point(double recall, double precision) {
+	public Point(double xRecall, double yPrecision) {
 		super();
-		xRecall = recall;
-		yPrecision = precision;
+		this.xRecall = xRecall;
+		this.yPrecision = yPrecision;
 	}
 
 	public double getXRecall() {
 		return xRecall;
 	}
+	
 	public void setXRecall(double recall) {
 		xRecall = recall;
 	}
+	
 	public double getYPrecision() {
 		return yPrecision;
 	}
+	
 	public void setYPrecision(double precision) {
 		yPrecision = precision;
 	}
 	
 	@Override
 	public String toString() {
-		return xRecall+"\t"+yPrecision;
+		return xRecall + "\t" + yPrecision;
 	}
 	
 	//Recebe uma  lista de pontos e normaliza em um conjunto de dez pontos.
-	public static List<Point> interpolate(List<Point> lista){
-		List<Point> pontos = new ArrayList<Point>();
+	/**
+	 * Receives a list of Point objects and normalizes them in a set of ten Points
+	 * @param listOfPoints - the list that contains Point objects to be interpolated
+	 * @return a new list of interpolated Point objects
+	 */
+	public static List<Point> interpolate(List<Point> listOfPoints){
+		List<Point> newListOfPoints = new ArrayList<Point>();
 		for (int k = 0; k < 11; k++) {
-			pontos.add(new Point(k, 0.0));
+			newListOfPoints.add(new Point(k, 0.0));
 		}
 		
-		for (int j = 0; j < lista.size(); j++) {
-			Double recall = lista.get(j).getXRecall();
-			Double precision = lista.get(j).getYPrecision();
+		for (int j = 0; j < listOfPoints.size(); j++) {
+			Double recall = listOfPoints.get(j).getXRecall();
+			Double precision = listOfPoints.get(j).getYPrecision();
 			
 			for (int k = 0; k < 11; k++) {
-				if((k < (recall*10)) && ((recall*10) < k+1)){
-					if(precision > pontos.get(k).yPrecision)
-						pontos.get(k).yPrecision = precision; 
+				if ((k < (recall*10)) && ((recall*10) < k+1)){
+					if (precision > newListOfPoints.get(k).yPrecision)
+						newListOfPoints.get(k).yPrecision = precision; 
 				}
 			}
 		}
 		for (int k = 0; k < 11; k++) {
-			System.out.println(pontos.get(k));
+			System.out.println(newListOfPoints.get(k));
 		}
 		
-		return pontos;
-		
+		return newListOfPoints;		
 	}
 
 }

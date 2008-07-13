@@ -16,7 +16,7 @@ public class Evaluation {
 	private int recordId;
 
 	public Evaluation() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public void setId(int id) {

@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class TestConnection {
-	DB db;
+	
+	private DB db;
 
 	public TestConnection() {
 		db = new DB();
@@ -14,7 +15,6 @@ public class TestConnection {
 	public void test() {
 		db.dbConnect("jdbc:mysql://localhost/bri", "root", "admin");
 	}
-	
 }
 
 class DB {
@@ -28,7 +28,9 @@ class DB {
 			Connection conn = DriverManager.getConnection(db_connect_string,
 					db_userid, db_password);
 			System.out.println("Connection With Database OK");
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
