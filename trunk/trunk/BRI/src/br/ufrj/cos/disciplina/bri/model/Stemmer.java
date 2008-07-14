@@ -5,14 +5,14 @@ public class Stemmer {
 	// Adapted from http://tartarus.org/~martin/PorterStemmer/java.txt
 	// Some points of difference and common errors are described in http://tartarus.org/~martin/PorterStemmer/
 
-	private char[] b;
+	private char[] word;
 	private int i; // offset into b
 	private int i_end; // offset to end of stemmed word
 	private int j, k;
 	private static final int INC = 50; // unit of size whereby b is increased
 
 	public Stemmer() {
-		b = new char[INC];
+		word = new char[INC];
 		i = 0;
 		i_end = 0;
 	}
@@ -23,14 +23,14 @@ public class Stemmer {
 	 * @param character - the character to be added
 	 */
 	public void add(char character) {
-		if (i == b.length) {
-			char[] new_b = new char[i+INC];
+		if (i == word.length) {
+			char[] new_b = new char[i + INC];
 			for (int c = 0; c < i; c++) {
-				new_b[c] = b[c];
+				new_b[c] = word[c];
 			}
-			b = new_b;
+			word = new_b;
 		}
-		b[i++] = character;
+		word[i++] = character;
 	}
 
 	/** Adds wLen characters to the word being stemmed contained in a portion
@@ -38,16 +38,15 @@ public class Stemmer {
 	 * faster.
 	 */
 	public void add(char[] w, int wLen) {
-		if (i+wLen >= b.length)
-		{  
+		if (i+wLen >= word.length) {  
 			char[] new_b = new char[i+wLen+INC];
 			for (int c = 0; c < i; c++) {
-				new_b[c] = b[c];
+				new_b[c] = word[c];
 			}
-			b = new_b;
+			word = new_b;
 		}
 		for (int c = 0; c < wLen; c++) {
-			b[i++] = w[c];
+			word[i++] = w[c];
 		}
 	}
 
@@ -58,7 +57,7 @@ public class Stemmer {
 	 * @return the word that has been stemmed
 	 */
 	public String toString() {
-		return new String(b, 0, i_end);
+		return new String(word, 0, i_end);
 	}
 
 	/**
@@ -75,7 +74,7 @@ public class Stemmer {
 	 * 
 	 */
 	public char[] getResultBuffer() {
-		return b;
+		return word;
 	}
 
 	/**
@@ -83,7 +82,7 @@ public class Stemmer {
 	 *
 	 */
 	private final boolean cons(int i) {
-		switch (b[i]) {
+		switch (word[i]) {
 		case 'a':
 		case 'e':
 		case 'i':
@@ -160,7 +159,7 @@ public class Stemmer {
 		if (j < 1) {
 			return false;
 		}
-		if (b[j] != b[j-1]) {
+		if (word[j] != word[j-1]) {
 			return false;
 		}
 		return cons(j);
@@ -176,7 +175,7 @@ public class Stemmer {
 			return false;
 		}
 		{  
-			int ch = b[i];
+			int ch = word[i];
 			if (ch == 'w' || ch == 'x' || ch == 'y') {
 				return false;
 			}
@@ -195,7 +194,7 @@ public class Stemmer {
 			return false;
 		}
 		for (int i = 0; i < l; i++) {
-			if (b[o+i] != s.charAt(i)) {
+			if (word[o+i] != s.charAt(i)) {
 				return false;
 			}
 		}
@@ -208,7 +207,7 @@ public class Stemmer {
 		int l = s.length();
 		int o = j+1;
 		for (int i = 0; i < l; i++) {
-			b[o+i] = s.charAt(i);
+			word[o+i] = s.charAt(i);
 		}
 		k = j+l;
 	}
@@ -241,12 +240,12 @@ public class Stemmer {
 	 */
 	private final void step1()
 	{
-		if (b[k] == 's') {
+		if (word[k] == 's') {
 			if (ends("sses")) {
 				k -= 2;
 			} else if (ends("ies")) {
 				setTo("i");
-			} else if (b[k-1] != 's') {
+			} else if (word[k-1] != 's') {
 				k--;
 			}
 		}
@@ -263,7 +262,7 @@ public class Stemmer {
 			} else if (doublec(k)) { 
 				k--;
 				{
-					int ch = b[k];
+					int ch = word[k];
 					if (ch == 'l' || ch == 's' || ch == 'z'){
 						k++;
 					}
@@ -278,7 +277,7 @@ public class Stemmer {
 	/** step2() turns terminal y to i when there is another vowel in the stem. */
 	private final void step2() {
 		if (ends("y") && vowelinstem()) {
-			b[k] = 'i'; 
+			word[k] = 'i'; 
 		}
 	}
 
@@ -289,8 +288,7 @@ public class Stemmer {
 		if (k == 0) {
 			return;
 		}
-		/* For Bug 1 */ // TODO ??? como assim Bug 1?
-		switch (b[k-1]) {
+		switch (word[k-1]) {
 		case 'a':
 			if (ends("ational")) {
 				r("ate");
@@ -394,7 +392,7 @@ public class Stemmer {
 
 	/** step4() deals with -ic-, -full, -ness etc. similar strategy to step3. */
 	private final void step4() {
-		switch (b[k])	   {
+		switch (word[k])	   {
 		case 'e': 
 			if (ends("icate")) {
 				r("ic");
@@ -433,8 +431,7 @@ public class Stemmer {
 		if (k == 0) {
 			return;
 		}
-		/* for Bug 1 */ //TODO ??? como assim Bug 1?
-		switch (b[k-1]) {
+		switch (word[k-1]) {
 		case 'a':
 			if (ends("al")) {
 				break;
@@ -482,10 +479,9 @@ public class Stemmer {
 			}
 			return;
 		case 'o':
-			if ((ends("ion")) && (j >= 0) && ((b[j] == 's') || (b[j] == 't'))) {
+			if ((ends("ion")) && (j >= 0) && ((word[j] == 's') || (word[j] == 't'))) {
 				break;
 			}
-			/* j >= 0 fixes Bug 2 */ // TODO mas que coisa é essa de bug???
 			if (ends("ou")) {
 				break;
 			}
@@ -530,13 +526,13 @@ public class Stemmer {
 	/** step6() removes a final -e if m() > 1. */
 	private final void step6() {
 		j = k;
-		if (b[k] == 'e') {
+		if (word[k] == 'e') {
 			int a = m();
 			if ((a > 1) || (a == 1) && (!cvc(k-1))) {
 				k--;
 			}
 		}
-		if ((b[k] == 'l') && (doublec(k)) && (m() > 1)) {
+		if ((word[k] == 'l') && (doublec(k)) && (m() > 1)) {
 			k--;
 		}
 	}
