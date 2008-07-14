@@ -2,6 +2,7 @@ package br.ufrj.cos.disciplina.bri.algorithms;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,41 +16,40 @@ public class TextPreprocessing {
 		// based on the list found at http://www.ranks.nl/tools/stopwords.html
 		listOfStopWords = new Vector<String>();
 		listOfStopWords.add("I");
-		listOfStopWords.add("a");
-		listOfStopWords.add("about");
-		listOfStopWords.add("an");
-		listOfStopWords.add("are");
-		listOfStopWords.add("as");
-		listOfStopWords.add("at");
-		listOfStopWords.add("be");
-		listOfStopWords.add("by");
-		listOfStopWords.add("com");
-		listOfStopWords.add("de");
-		listOfStopWords.add("en");
-		listOfStopWords.add("for");
-		listOfStopWords.add("from");
-		listOfStopWords.add("how");
-		listOfStopWords.add("in");
-		listOfStopWords.add("is");
-		listOfStopWords.add("it");
-		listOfStopWords.add("la");
-		listOfStopWords.add("of");
-		listOfStopWords.add("on");
-		listOfStopWords.add("or");
-		listOfStopWords.add("that");
-		listOfStopWords.add("the");
-		listOfStopWords.add("this");
-		listOfStopWords.add("to");
-		listOfStopWords.add("was");
-		listOfStopWords.add("what");
-		listOfStopWords.add("when");
-		listOfStopWords.add("where");
-		listOfStopWords.add("who");
-		listOfStopWords.add("will");
-		listOfStopWords.add("with");
-		listOfStopWords.add("und");
-		listOfStopWords.add("the");
-		listOfStopWords.add("www");
+		listOfStopWords.add("A");
+		listOfStopWords.add("ABOUT");
+		listOfStopWords.add("AN");
+		listOfStopWords.add("ARE");
+		listOfStopWords.add("AS");
+		listOfStopWords.add("AT");
+		listOfStopWords.add("BE");
+		listOfStopWords.add("BY");
+		listOfStopWords.add("COM");
+		listOfStopWords.add("DE");
+		listOfStopWords.add("EN");
+		listOfStopWords.add("FOR");
+		listOfStopWords.add("FROM");
+		listOfStopWords.add("HOW");
+		listOfStopWords.add("IN");
+		listOfStopWords.add("IS");
+		listOfStopWords.add("IT");
+		listOfStopWords.add("LA");
+		listOfStopWords.add("OF");
+		listOfStopWords.add("ON");
+		listOfStopWords.add("OR");
+		listOfStopWords.add("THAT");
+		listOfStopWords.add("THE");
+		listOfStopWords.add("THIS");
+		listOfStopWords.add("TO");
+		listOfStopWords.add("WAS");
+		listOfStopWords.add("WHAT");
+		listOfStopWords.add("WHEN");
+		listOfStopWords.add("WHERE");
+		listOfStopWords.add("WHO");
+		listOfStopWords.add("WILL");
+		listOfStopWords.add("WITH");
+		listOfStopWords.add("UND");
+		listOfStopWords.add("WWW");
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class TextPreprocessing {
 		// ((Vector<String>) listOfWords).copyInto(words);
 
 		for (int i = 0; i < words.length; i++) {
-			String word = words[i];
+			String word = words[i].toUpperCase();
 			// this algorithm is not (yet?) considering composite terms
 			if (!listOfStopWords.contains(word)) {
 				listOfWords.add(word);
@@ -114,21 +114,44 @@ public class TextPreprocessing {
 			// the stemming algorithm works with arrays of chars
 			char[] word = wordString.toCharArray();
 			for(int pos = 0; pos < word.length; pos++) {
-				int j = 0;
-
 				// the stemming algorithm works with lower-case letters
-				stemmer.add(Character.toLowerCase(word[j]));
-				stemmer.stem();
-
-				String resultString = stemmer.toString();
-
-				System.out.print(resultString);
-				// undoing the lower-case conversion (supposing that letters were all upper-case)
-				result.add(resultString.toUpperCase());
+				stemmer.add(Character.toLowerCase(word[pos]));
 			}
+			// calling the stemming algorithm
+			stemmer.stem();
+
+			String resultString = stemmer.toString();
+
+			// undoing the lower-case conversion (supposing that letters were all upper-case)
+			result.add(resultString.toUpperCase());
 		}
 		return result;
 	}
 
-
+	// TODO just for test - delete before delivery =) 
+	public static void main(String[] args) {
+		
+		String string = new String("The quick brown fox jumps over the lazy dog mating ocurring");
+		
+		List<String> tempOriginal = new Vector<String>();
+		List<String> tempResultante;
+		
+		TextPreprocessing classe = new TextPreprocessing();
+		
+		tempOriginal = classe.removeStopWords(string);
+		
+		System.out.println("Pós-Stop Words:");
+		for (Iterator<String> iterator = tempOriginal.iterator(); iterator.hasNext();) {
+			String temp = (String) iterator.next();
+			System.out.println(temp);
+		}
+		
+		tempResultante = classe.applyPorterStemmer(tempOriginal);
+		
+		System.out.println("Pós-Porter:");
+		for (Iterator<String> iterator = tempResultante.iterator(); iterator.hasNext();) {
+			String temp = (String) iterator.next();
+			System.out.println(temp);
+		}
+	}
 }
