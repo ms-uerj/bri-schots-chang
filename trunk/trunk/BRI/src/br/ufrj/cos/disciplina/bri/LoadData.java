@@ -15,6 +15,9 @@ public class LoadData {
 	/**
 	 * @param args
 	 */
+	/*
+	 * Lê dados dos arquivos XML e popula o banco de dados.
+	 */
 	public static void main(String[] args) {
 		//TestConnection connection = new TestConnection();
 		//connection.test();

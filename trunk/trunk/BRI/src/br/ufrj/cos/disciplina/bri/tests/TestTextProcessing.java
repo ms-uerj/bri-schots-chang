@@ -18,7 +18,6 @@ public class TestTextProcessing {
 		List<String> tempResultante;
 		
 		TextPreprocessing classe = new TextPreprocessing();
-		
 		classe.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
 		
 		tempOriginal = classe.removeStopWords(string);
