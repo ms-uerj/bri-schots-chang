@@ -19,42 +19,7 @@ public class TextPreprocessing {
 	public TextPreprocessing() {
 		// based on the list found at http://www.ranks.nl/tools/stopwords.html
 		listOfStopWords = new Vector<String>();
-		/*listOfStopWords.add("I");
-		listOfStopWords.add("A");
-		listOfStopWords.add("ABOUT");
-		listOfStopWords.add("AN");
-		listOfStopWords.add("ARE");
-		listOfStopWords.add("AS");
-		listOfStopWords.add("AT");
-		listOfStopWords.add("BE");
-		listOfStopWords.add("BY");
-		listOfStopWords.add("COM");
-		listOfStopWords.add("DE");
-		listOfStopWords.add("EN");
-		listOfStopWords.add("FOR");
-		listOfStopWords.add("FROM");
-		listOfStopWords.add("HOW");
-		listOfStopWords.add("IN");
-		listOfStopWords.add("IS");
-		listOfStopWords.add("IT");
-		listOfStopWords.add("LA");
-		listOfStopWords.add("OF");
-		listOfStopWords.add("ON");
-		listOfStopWords.add("OR");
-		listOfStopWords.add("THAT");
-		listOfStopWords.add("THE");
-		listOfStopWords.add("THIS");
-		listOfStopWords.add("TO");
-		listOfStopWords.add("WAS");
-		listOfStopWords.add("WHAT");
-		listOfStopWords.add("WHEN");
-		listOfStopWords.add("WHERE");
-		listOfStopWords.add("WHO");
-		listOfStopWords.add("WILL");
-		listOfStopWords.add("WITH");
-		listOfStopWords.add("UND");
-		listOfStopWords.add("WWW");
-		*/
+
 	}
 
 	/**
@@ -65,28 +30,16 @@ public class TextPreprocessing {
 	 * @return the content of the input string without special characters
 	 */
 	public String removeSpecialCharacters(String source) {
+		
+		source = source.replaceAll("[^a-zA-Z]"," ");
+		
 		final StringBuilder result = new StringBuilder();
-		final StringCharacterIterator iterator = new StringCharacterIterator(
-				source);
+		final StringCharacterIterator iterator = new StringCharacterIterator(source);
 		char character = iterator.current();
 		while (character != CharacterIterator.DONE) {
-			// if ((character == '<') || (character == '>') || (character ==
-			// '&') || (character == '\"')
-			// || (character == '\'') || (character == '(') || (character ==
-			// ')') || (character == '#')
-			// || (character == '%') || (character == ';') || (character == '+')
-			// || (character == '-')) {
-			// // the current char is a special one, do not add it to the result
-			// } else {
-			// // the current char is not a special one, so add it to the result
-			// as it is
-			// result.append(character);
-			// }
-
-			// if the character is a letter [A-Z], a digit [0-9] or whitespace,
-			// add it to the result
-			if (Character.isLetterOrDigit(character)
-					|| Character.isWhitespace(character)) {
+			
+			if (Character.isWhitespace(character) && Character.isWhitespace(iterator.next())) {
+			}else {
 				result.append(character);
 			}
 			character = iterator.next();
