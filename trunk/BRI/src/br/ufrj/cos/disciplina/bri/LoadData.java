@@ -16,8 +16,8 @@ public class LoadData {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		TestConnection connection = new TestConnection();
-		connection.test();
+		//TestConnection connection = new TestConnection();
+		//connection.test();
 
 		// Lista de Records
 		List<Record> listRecords = new ArrayList<Record>();
