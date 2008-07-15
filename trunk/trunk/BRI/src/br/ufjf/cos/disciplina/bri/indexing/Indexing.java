@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import br.ufjf.cos.disciplina.bri.indexing.model.RadixInfo;
+import br.ufrj.cos.disciplina.bri.model.Record;
 
 public class Indexing {
 	
@@ -41,4 +42,6 @@ public class Indexing {
 			hash.put(radix, list);
 		}
 	}
+	
+
 }

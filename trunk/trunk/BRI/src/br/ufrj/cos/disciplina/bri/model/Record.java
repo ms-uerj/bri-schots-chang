@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,6 +26,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import br.ufrj.cos.disciplina.bri.algorithms.TextPreprocessing;
+
 @Entity
 public class Record {
 
@@ -34,9 +39,14 @@ public class Record {
 	private String abztract;
 	@Column(name = "DATA",length = 500)
 	private String data;
-
+	
+	@Transient
+	private List<String> titleTerms;
+	private List<String> abztractTerms;
+	
 	public Record() {
-
+		titleTerms = new ArrayList<String>();
+		abztractTerms = new ArrayList<String>();
 	}
 
 	public Record(int id, String title, String abztract, String document) {
@@ -151,6 +161,35 @@ public class Record {
 			e.printStackTrace();
 		}
 		return listaRecords;
+	}
+	
+	/*
+	 * popula a lista de termos: titleTerms, aztractTerms
+	 * baseada nas regras de um textProcessor
+	 */
+	public void processText(TextPreprocessing textProcessor) {
+		List<String> tempOriginal = new Vector<String>();
+		
+		System.out.println("record: "+id);
+		
+		if (abztract == null) abztract = "";
+		
+		//System.out.println("title original: "+title);
+		//System.out.println("abstract original: "+abztract);
+		
+		String tempTitle = title.toUpperCase();
+		String tempAbztract = abztract.toUpperCase();
+		
+		tempTitle = textProcessor.removeSpecialCharacters(tempTitle);			
+		tempAbztract = textProcessor.removeSpecialCharacters(tempAbztract);
+		
+		tempOriginal = textProcessor.removeStopWords(tempTitle);
+		titleTerms = textProcessor.applyPorterStemmer(tempOriginal);
+		//System.out.println("title novo: "+title);
+		
+		tempOriginal = textProcessor.removeStopWords(tempAbztract);
+		abztractTerms = textProcessor.applyPorterStemmer(tempOriginal);
+		//System.out.println("title novo: "+abztract);
 	}
 
 }

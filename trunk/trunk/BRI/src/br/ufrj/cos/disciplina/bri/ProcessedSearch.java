@@ -9,7 +9,7 @@ import br.ufrj.cos.disciplina.bri.algorithms.TextPreprocessing;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 
-public class ProcessSearch {
+public class ProcessedSearch {
 
 	/**
 	 * @param args
@@ -49,37 +49,10 @@ public class ProcessSearch {
 		TextPreprocessing textProcessor = new TextPreprocessing();
 		textProcessor.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
 		
+		//processa o conteudo de cada record lido dos documentos XML
 		for (Iterator<Record> iterator = listRecords.iterator(); iterator.hasNext();) {
 			Record record = iterator.next();
-			
-			List<String> tempOriginal = new Vector<String>();
-			List<String> tempResultante;
-			
-			System.out.println("record: "+record.getId());
-			
-			String title = record.getTitle();
-			String abztract = record.getAbztract();
-			if (abztract == null) abztract = "";
-			
-			System.out.println("title original: "+title);
-			System.out.println("abstract original: "+abztract);
-			
-			title.toUpperCase();
-			abztract.toUpperCase();
-			
-			title = textProcessor.removeSpecialCharacters(title);			
-			abztract = textProcessor.removeSpecialCharacters(abztract);
-			
-			tempOriginal = textProcessor.removeStopWords(title);
-			tempResultante = textProcessor.applyPorterStemmer(tempOriginal);
-			title = tempResultante.toString();
-			System.out.println("title novo: "+title);
-			
-			tempOriginal = textProcessor.removeStopWords(abztract);
-			tempResultante = textProcessor.applyPorterStemmer(tempOriginal);
-			abztract = tempResultante.toString();
-			System.out.println("title novo: "+abztract);
-			
+			record.processText(textProcessor);
 		}
 		
 	}

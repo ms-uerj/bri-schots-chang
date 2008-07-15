@@ -7,6 +7,9 @@ public class RadixInfo {
 	
 	// shows how much times the radix occurs in the document
 	private int numberOfOccurrences;
+	
+	// specifies the section of the document (TITLE, ABSTRACT)
+	private int part;
 
 	// TODO a double variable for weight??? is it necessary??? see slides
 	
