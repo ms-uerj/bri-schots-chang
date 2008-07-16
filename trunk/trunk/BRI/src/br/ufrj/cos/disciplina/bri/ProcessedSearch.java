@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import br.ufrj.cos.disciplina.bri.alg.TextPreprocessing;
+import br.ufrj.cos.disciplina.bri.algorithm.TextPreprocessing;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 

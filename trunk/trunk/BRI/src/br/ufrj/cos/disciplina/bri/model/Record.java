@@ -26,7 +26,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import br.ufrj.cos.disciplina.bri.alg.TextPreprocessing;
+import br.ufrj.cos.disciplina.bri.algorithm.TextPreprocessing;
 
 @Entity
 public class Record {

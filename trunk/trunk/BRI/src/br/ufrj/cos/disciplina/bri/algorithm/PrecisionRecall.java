@@ -1,4 +1,4 @@
-package br.ufrj.cos.disciplina.bri.alg;
+package br.ufrj.cos.disciplina.bri.algorithm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

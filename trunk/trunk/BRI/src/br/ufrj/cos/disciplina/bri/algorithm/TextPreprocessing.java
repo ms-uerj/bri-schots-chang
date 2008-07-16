@@ -1,4 +1,4 @@
-package br.ufrj.cos.disciplina.bri.alg;
+package br.ufrj.cos.disciplina.bri.algorithm;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
