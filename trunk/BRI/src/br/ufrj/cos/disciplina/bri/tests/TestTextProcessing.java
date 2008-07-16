@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import br.ufrj.cos.disciplina.bri.alg.TextPreprocessing;
+import br.ufrj.cos.disciplina.bri.algorithm.TextPreprocessing;
 
 public class TestTextProcessing {
 

@@ -3,7 +3,7 @@ package br.ufrj.cos.disciplina.bri;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufrj.cos.disciplina.bri.alg.PrecisionRecall;
+import br.ufrj.cos.disciplina.bri.algorithm.PrecisionRecall;
 import br.ufrj.cos.disciplina.bri.model.Point;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
