@@ -37,22 +37,15 @@ public class TextPreprocessing {
 		final StringCharacterIterator iterator = new StringCharacterIterator(source);
 		char character = iterator.current();
 		
-		//	revision 18
-		//	while (character != CharacterIterator.DONE) {
-		//	if (Character.isWhitespace(character) && Character.isWhitespace(iterator.next())) {
-		//	}else {
-		//		result.append(character);
-		//	}
-		//	character = iterator.next();
-		//	}
+		// removes excessive whitespace occurrences
 		do {
-			if (!Character.isWhitespace(character)) {
+			if (!(Character.isWhitespace(character) && Character.isWhitespace(iterator.next()))) {
 				result.append(character);
 			}
 			character = iterator.next();
 		} while (character != CharacterIterator.DONE);
 		
-		return result.toString();
+		return result.toString().trim();
 	}
 
 	/**
@@ -66,7 +59,6 @@ public class TextPreprocessing {
 		String[] words = source.split(" ");
 
 		List<String> listOfWords = new Vector<String>();
-		// ((Vector<String>) listOfWords).copyInto(words);
 
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i].toUpperCase();
@@ -89,7 +81,7 @@ public class TextPreprocessing {
 
 		for (int i = 0; i < source.size(); i++) {
 			String wordString = source.get(i);
-			// the stemming algorithm works with arrays of chars
+			// the stemming algorithm works with arrays of char
 			char[] word = wordString.toCharArray();
 			for (int pos = 0; pos < word.length; pos++) {
 				// the stemming algorithm works with lower-case letters
@@ -100,8 +92,8 @@ public class TextPreprocessing {
 
 			String resultString = stemmer.toString();
 
-			// undoing the lower-case conversion (supposing that letters were
-			// all upper-case)
+			// undoing the lower-case conversion
+			// (supposing that letters were all upper-case)
 			result.add(resultString.toUpperCase());
 		}
 		return result;
@@ -109,7 +101,8 @@ public class TextPreprocessing {
 
 	/**
 	 * Loads a list of stop words so that they can be removed
-	 * by the function <code>removeStopWords(String source)</code>
+	 * by the function <code>removeStopWords(String source)</code>.
+	 * The file must have <i>only one word</i> per line.
 	 * @param filePath - string with the file path
 	 * @return true if loaded successfully, false otherwise
 	 */
@@ -120,11 +113,11 @@ public class TextPreprocessing {
 			// get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fileInputStream);
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-			String strLine;
+			String stringLine;
 			// read the file line by line
-			while ((strLine = bufferedReader.readLine()) != null) {
+			while ((stringLine = bufferedReader.readLine()) != null) {
 				// System.out.println (strLine);
-				listOfStopWords.add(strLine);
+				listOfStopWords.add(stringLine.trim());
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println("Error: " + e.getMessage());

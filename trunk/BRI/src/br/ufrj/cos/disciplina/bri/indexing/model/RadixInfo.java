@@ -1,4 +1,4 @@
-package br.ufjf.cos.disciplina.bri.indexing.model;
+package br.ufrj.cos.disciplina.bri.indexing.model;
 
 public class RadixInfo {
 
