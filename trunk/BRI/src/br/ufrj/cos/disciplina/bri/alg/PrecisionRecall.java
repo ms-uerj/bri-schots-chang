@@ -1,16 +1,11 @@
-package br.ufrj.cos.disciplina.bri.algorithm;
+package br.ufrj.cos.disciplina.bri.alg;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import br.ufrj.cos.disciplina.bri.model.Point;
 import br.ufrj.cos.disciplina.bri.model.Query;
@@ -20,10 +15,10 @@ public class PrecisionRecall {
 	public static String TYPE_QUERY_NATURAL = "NATURAL";
 	public static String TYPE_QUERY_NATURAL_EXT = "NATURAL_EXT";
 
-	/*
-	 * Retorna conjunto de elementos de uma consulta
+	/**
+	 * @return a set of elements from a query
 	 */
-	public static List<Integer> getQueryElementSet(String tipoBusca,Query query, String campoConsulta) {
+	public static List<Integer> getQueryElementSet(String searchType,Query query, String campoConsulta) {
 
 		ArrayList<Integer> answers = new ArrayList<Integer>();
 
@@ -32,10 +27,9 @@ public class PrecisionRecall {
 		try {
 
 			Class.forName("com.mysql.jdbc.Driver");
-			//Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/bri", "root", "admin");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/bri");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/bri", "root", "admin");
+			//Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/bri");
 			Statement statement = conn.createStatement();
-			ResultSet resultQuestion;
 
 			ResultSet resultAnswers;
 			
@@ -44,11 +38,11 @@ public class PrecisionRecall {
 			queryString = "SELECT *"
 				+ " FROM record WHERE MATCH (" + campoConsulta
 				+ ") AGAINST ('" + query.getQuestion() +"'";
-			if(tipoBusca.equals(PrecisionRecall.TYPE_QUERY_BOOLEAN)){
+			if(searchType.equals(PrecisionRecall.TYPE_QUERY_BOOLEAN)){
 				queryString += " IN BOOLEAN MODE)"; 
-			} else if (tipoBusca.equals(PrecisionRecall.TYPE_QUERY_NATURAL)){
+			} else if (searchType.equals(PrecisionRecall.TYPE_QUERY_NATURAL)){
 				queryString += ")";
-			} else if (tipoBusca.equals(PrecisionRecall.TYPE_QUERY_NATURAL_EXT)) {
+			} else if (searchType.equals(PrecisionRecall.TYPE_QUERY_NATURAL_EXT)) {
 				queryString += " WITH QUERY EXPANSION)";
 			}
 			
@@ -62,7 +56,7 @@ public class PrecisionRecall {
 			e.printStackTrace();
 		}
 
-		System.out.println("consulta: "+answers);
+		System.out.println("Consulta: " + answers);
 
 		return answers;
 	}
@@ -77,24 +71,23 @@ public class PrecisionRecall {
 			relevants.add(query.getEvaluations().get(i).getRecordId());
 
 		}
-		System.out.println("relevantes: "+relevants);
+		System.out.println("Relevantes: " + relevants);
 
 		return relevants;
 	}
 	
 	public static List<Point> getPrecisionRecall(List<Integer> relevants, List<Integer> answers){
-		List<Point> lista = new ArrayList<Point>();
+		List<Point> listOfPoints = new ArrayList<Point>();
 		
+		// number of elements returned by the search that are relevants
 		double numElementosComum = 0;
 		int sizeRelevants = relevants.size();
-		// int sizeAnswers = answers.size();
 		
-		List< Double> precisions = new ArrayList<Double>();
-		List< Double> recalls = new ArrayList<Double>();
+		List<Double> precisions = new ArrayList<Double>();
+		List<Double> recalls = new ArrayList<Double>();
 		
+		// recall
 		double recall;
-		double precision;
-		//recall
 		for (int i = 0; i < relevants.size(); i++) {
 			if (answers.contains(relevants.get(i))) {
 				numElementosComum++;
@@ -102,8 +95,11 @@ public class PrecisionRecall {
 				recalls.add(recall);
 			}
 		}
-		//precision
+		
 		numElementosComum = 0;
+		
+		//precision
+		double precision;
 		for (int j = 0; j < answers.size(); j++) {
 			if(relevants.contains(answers.get(j))){
 				numElementosComum++;
@@ -111,12 +107,11 @@ public class PrecisionRecall {
 				precisions.add(precision);
 			}
 		}
-		
 		for (int i = 0; i < precisions.size(); i++) {
-			lista.add(new Point(recalls.get(i), precisions.get(i)));
+			listOfPoints.add(new Point(recalls.get(i), precisions.get(i)));
 			System.out.println(recalls.get(i)+"\t"+precisions.get(i));
 		}
 		
-		return lista;
+		return listOfPoints;
 	}
 }

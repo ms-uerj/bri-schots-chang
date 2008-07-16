@@ -1,13 +1,13 @@
-package br.ufrj.cos.disciplina.bri.algorithms;
+package br.ufrj.cos.disciplina.bri.alg;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -18,9 +18,7 @@ public class TextPreprocessing {
 	public List<String> listOfStopWords;
 
 	public TextPreprocessing() {
-		// based on the list found at http://www.ranks.nl/tools/stopwords.html
 		listOfStopWords = new Vector<String>();
-
 	}
 
 	/**
@@ -32,29 +30,37 @@ public class TextPreprocessing {
 	 */
 	public String removeSpecialCharacters(String source) {
 		
+		// replaces all the "non-letter" characters by a whitespace
 		source = source.replaceAll("[^a-zA-Z]"," ");
 		
 		final StringBuilder result = new StringBuilder();
 		final StringCharacterIterator iterator = new StringCharacterIterator(source);
 		char character = iterator.current();
-		while (character != CharacterIterator.DONE) {
-			
-			if (Character.isWhitespace(character) && Character.isWhitespace(iterator.next())) {
-			}else {
+		
+		//	revision 18
+		//	while (character != CharacterIterator.DONE) {
+		//	if (Character.isWhitespace(character) && Character.isWhitespace(iterator.next())) {
+		//	}else {
+		//		result.append(character);
+		//	}
+		//	character = iterator.next();
+		//	}
+		do {
+			if (!Character.isWhitespace(character)) {
 				result.append(character);
 			}
 			character = iterator.next();
-		}
+		} while (character != CharacterIterator.DONE);
+		
 		return result.toString();
 	}
 
 	/**
-	 * Removes all special characters from the input string, if any
+	 * Removes stop words (defined in the listOfStopWords list) from the input string, if any
 	 * 
 	 * @param source -
 	 *            a string
-	 * @return a list of all the words from the input string, except the stop
-	 *         words
+	 * @return a list of the words from the input string, but without the stopwords
 	 */
 	public List<String> removeStopWords(String source) {
 		String[] words = source.split(" ");
@@ -101,25 +107,32 @@ public class TextPreprocessing {
 		return result;
 	}
 
+	/**
+	 * Loads a list of stop words so that they can be removed
+	 * by the function <code>removeStopWords(String source)</code>
+	 * @param filePath - string with the file path
+	 * @return true if loaded successfully, false otherwise
+	 */
 	public boolean loadListOfStopWords(String filePath) {
 		try {
-			// Open the file that is the first
-			// command line parameter
-			FileInputStream fstream = new FileInputStream(filePath);
-			// Get the object of DataInputStream
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			// open the file using the path defined in filePath parameter
+			FileInputStream fileInputStream = new FileInputStream(filePath);
+			// get the object of DataInputStream
+			DataInputStream in = new DataInputStream(fileInputStream);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
 			String strLine;
-			// Read File Line By Line
-			while ((strLine = br.readLine()) != null) {
-				// Print the content on the console
+			// read the file line by line
+			while ((strLine = bufferedReader.readLine()) != null) {
 				// System.out.println (strLine);
 				listOfStopWords.add(strLine);
 			}
-			// Close the input stream
-			in.close();
-		} catch (Exception e) {// Catch exception if any
+		} catch (FileNotFoundException e) {
 			System.err.println("Error: " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			System.err.println("Error: " + e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 		return true;

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Evaluation {
+	
 	@Id
 	@GeneratedValue
 	private int id;
@@ -38,6 +39,7 @@ public class Evaluation {
 	public void setRecordId(int recordId) {
 		this.recordId = recordId;
 	}
+	
 	public int getRecordId() {
 		return recordId;
 	}

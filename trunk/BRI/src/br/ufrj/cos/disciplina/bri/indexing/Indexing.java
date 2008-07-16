@@ -1,11 +1,10 @@
-package br.ufjf.cos.disciplina.bri.indexing;
+package br.ufrj.cos.disciplina.bri.indexing;
 
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
 import br.ufjf.cos.disciplina.bri.indexing.model.RadixInfo;
-import br.ufrj.cos.disciplina.bri.model.Record;
 
 public class Indexing {
 	

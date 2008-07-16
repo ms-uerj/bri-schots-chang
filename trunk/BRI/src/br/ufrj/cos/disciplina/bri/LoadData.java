@@ -8,39 +8,36 @@ import javax.persistence.EntityManager;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 import br.ufrj.cos.disciplina.bri.persistence.JPAResourceBean;
-import br.ufrj.cos.disciplina.bri.persistence.TestConnection;
+//import br.ufrj.cos.disciplina.bri.persistence.TestConnection;
 
 public class LoadData {
 
 	/**
-	 * @param args
-	 */
-	/*
-	 * Lê dados dos arquivos XML e popula o banco de dados.
+	 * Read data from XML files and populate the database.
 	 */
 	public static void main(String[] args) {
 		//TestConnection connection = new TestConnection();
 		//connection.test();
 
-		// Lista de Records
-		List<Record> listRecords = new ArrayList<Record>();
-		// Lista de Queries
-		List<Query> listQueries = new ArrayList<Query>();
+		// records list
+		List<Record> listOfRecords = new ArrayList<Record>();
+		// queries list
+		List<Query> listOfQueries = new ArrayList<Query>();
 
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf74.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf75.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf76.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf77.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf78.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf79.xml"));
 		
-		listQueries.addAll(Query.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
+		listOfQueries.addAll(Query.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
 
 		JPAResourceBean jpaResourceBean = new JPAResourceBean();
 		EntityManager em = jpaResourceBean.getEMF("mysql")
@@ -48,12 +45,12 @@ public class LoadData {
 		try {
 			em.getTransaction().begin();
 
-			for (int i = 0; i < listRecords.size(); i++) {
-				em.persist(listRecords.get(i));
+			for (int i = 0; i < listOfRecords.size(); i++) {
+				em.persist(listOfRecords.get(i));
 			}
 			
-			for (int i = 0; i < listQueries.size(); i++) {
-				em.persist(listQueries.get(i));
+			for (int i = 0; i < listOfQueries.size(); i++) {
+				em.persist(listOfQueries.get(i));
 			}
 
 			em.getTransaction().commit();

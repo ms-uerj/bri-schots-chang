@@ -37,8 +37,7 @@ public class Point {
 	public String toString() {
 		return xRecall + "\t" + yPrecision;
 	}
-	
-	//Recebe uma  lista de pontos e normaliza em um conjunto de dez pontos.
+
 	/**
 	 * Receives a list of Point objects and normalizes them in a set of ten Points
 	 * @param listOfPoints - the list that contains Point objects to be interpolated

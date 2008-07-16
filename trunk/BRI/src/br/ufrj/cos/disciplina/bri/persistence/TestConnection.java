@@ -29,8 +29,10 @@ class DB {
 					db_userid, db_password);
 			System.out.println("Connection With Database OK");
 		} catch (SQLException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

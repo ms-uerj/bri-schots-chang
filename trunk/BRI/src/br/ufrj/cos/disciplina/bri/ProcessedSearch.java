@@ -3,9 +3,8 @@ package br.ufrj.cos.disciplina.bri;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
-import br.ufrj.cos.disciplina.bri.algorithms.TextPreprocessing;
+import br.ufrj.cos.disciplina.bri.alg.TextPreprocessing;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 

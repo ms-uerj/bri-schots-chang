@@ -24,7 +24,7 @@ public class RadixInfo {
 	}
 
 	/**
-	 * @return the documentId
+	 * @return the documentId where a radix occurs
 	 */
 	public int getDocumentId() {
 		return documentId;
@@ -38,7 +38,7 @@ public class RadixInfo {
 	}
 
 	/**
-	 * @return the number of occurrences
+	 * @return the number of occurrences of the radix in the document
 	 */
 	public int getNumberOfOccurrences() {
 		return numberOfOccurrences;
@@ -49,5 +49,21 @@ public class RadixInfo {
 	 */
 	public void setNumberOfOccurrences(int numberOfOccurrences) {
 		this.numberOfOccurrences = numberOfOccurrences;
-	}	
+	}
+
+	/**
+	 * @return the part
+	 */
+	public int getPart() {
+		return part;
+	}
+
+	/**
+	 * @param part the part to set
+	 */
+	public void setPart(int part) {
+		this.part = part;
+	}
+	
+	
 }

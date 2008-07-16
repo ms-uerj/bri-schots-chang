@@ -57,80 +57,92 @@ public class Query {
 		return evaluations;
 	}
 
-	public static List<Query> parseQueryFromXML(String path) {
-		List<Query> listaQueries = new ArrayList<Query>();
+	/**
+	 * Parses the queries from a XML file
+	 * @param filePath - the XML file path
+	 * @return the list of queries
+	 */
+	public static List<Query> parseQueryFromXML(String filePath) {
+		List<Query> listOfQueries = new ArrayList<Query>();
 
-		// objetos necessários à leitura do XML
+		// objects requires for XML reading
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		Document myDoc;
 
-		// lista de nós (records) do XML
-		NodeList listQueries;
+		// XML node (record queries) list
+		NodeList listOfQueriesFromXML;
 
 		try {
 			db = dbf.newDocumentBuilder();
-			myDoc = db.parse(new File(path));
-			// inicialização da lista de registros
-			listQueries = myDoc.getElementsByTagName("QUERY");
+			myDoc = db.parse(new File(filePath));
+			// query list initialization
+			listOfQueriesFromXML = myDoc.getElementsByTagName("QUERY");
 
-			for (int i = 0; i < listQueries.getLength(); i++) {
+			for (int i = 0; i < listOfQueriesFromXML.getLength(); i++) {
 
-				// instancia o record a ser persistido
+				// instantiate the query object
 				Query query = new Query();
 
-				// captura o record e seu conteúdo
-				Node nodeQuery = listQueries.item(i);
+				// capture the query node and its content
+				Node nodeQuery = listOfQueriesFromXML.item(i);
 
 				NodeList queryContents = nodeQuery.getChildNodes();
 
-				// percorre o conteúdo capturado do record
+				// explore content captured from the query
 				for (int j = 0; j < queryContents.getLength(); j++) {
 
-					// captura o item do record
-					Node recordItem = queryContents.item(j);
+					// capture query item
+					Node queryItem = queryContents.item(j);
 
-					// captura o item conforme seu nome
-					if (recordItem.getNodeName().equals("QueryNumber")) {
-						query.setId(Integer.parseInt(recordItem.getFirstChild()
+					// capture an item according to its name
+					if (queryItem.getNodeName().equals("QueryNumber")) {
+						query.setId(Integer.parseInt(queryItem.getFirstChild()
 								.getNodeValue().trim()));
-					} else if (recordItem.getNodeName().equals("QueryText")) {
-						query.setQuestion(recordItem.getFirstChild()
+					} else if (queryItem.getNodeName().equals("QueryText")) {
+						query.setQuestion(queryItem.getFirstChild()
 								.getNodeValue());
-					} else if (recordItem.getNodeName().equals("Records")) {
+					} else if (queryItem.getNodeName().equals("Records")) {
 						query.evaluations = Query
-								.parseEvaluationFromXML(recordItem);
+								.parseEvaluationFromXML(queryItem);
 					}
 				}
-				// persiste o conteúdo capturado do record
-				listaQueries.add(query);
+				listOfQueries.add(query);
 			}
 		} catch (SAXException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return listaQueries;
+		return listOfQueries;
 	}
 
+	/**
+	 * Parses evaluation values from a XML node
+	 * @param node - the node to be explored
+	 * @return the list of evaluations
+	 */
 	public static List<Evaluation> parseEvaluationFromXML(Node node) {
-		List<Evaluation> listaEvaluations = new ArrayList<Evaluation>();
+		List<Evaluation> listOfEvaluations = new ArrayList<Evaluation>();
 
-		// lista de nós (records) do XML
-		NodeList listEvaluations;
+		// XML node (records) list
+		NodeList listOfRecords;
 
-		// inicialização da lista de registros
-		listEvaluations = node.getChildNodes();
+		// record list initialization
+		listOfRecords = node.getChildNodes();
 
-		for (int i = 0; i < listEvaluations.getLength(); i++) {
+		for (int i = 0; i < listOfRecords.getLength(); i++) {
 
-			// instancia o record a ser persistido
+			// instantiate the evaluation object
 			Evaluation evaluation = new Evaluation();
 
-			// captura o record e seu conteúdo
-			Node nodeEvaluation = listEvaluations.item(i);
+			// capture the evaluation node and its content
+			Node nodeEvaluation = listOfRecords.item(i);
 			//System.out.println("name" + nodeEvaluation.getNodeName());
 			//System.out.println("value" + nodeEvaluation.getNodeValue());
 
@@ -139,13 +151,9 @@ public class Query {
 						.getNodeValue().trim()));
 				evaluation.setScore(nodeEvaluation.getAttributes().getNamedItem("score").getNodeValue());
 
-				listaEvaluations.add(evaluation);
-			}
-
-			// persiste o conteúdo capturado do record
-			
+				listOfEvaluations.add(evaluation);
+			}			
 		}
-
-		return listaEvaluations;
+		return listOfEvaluations;
 	}
 }

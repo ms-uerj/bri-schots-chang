@@ -3,7 +3,7 @@ package br.ufrj.cos.disciplina.bri;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufrj.cos.disciplina.bri.algorithms.PrecisionRecall;
+import br.ufrj.cos.disciplina.bri.alg.PrecisionRecall;
 import br.ufrj.cos.disciplina.bri.model.Point;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
@@ -11,17 +11,14 @@ import br.ufrj.cos.disciplina.bri.model.Record;
 
 public class Main {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 
-		// TestConnection connection = new TestConnection();
-		// connection.test();
+		//TestConnection connection = new TestConnection();
+		//connection.test();
 
-		// Records list
+		// records list
 		List<Record> listOfRecords = new ArrayList<Record>();
-		// Queries list
+		// queries list
 		List<Query> listOfQueries = new ArrayList<Query>();
 
 		listOfRecords.addAll(Record
