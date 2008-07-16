@@ -26,7 +26,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import br.ufrj.cos.disciplina.bri.algorithms.TextPreprocessing;
+import br.ufrj.cos.disciplina.bri.alg.TextPreprocessing;
 
 @Entity
 public class Record {
@@ -90,55 +90,59 @@ public class Record {
 	}
 
 	public void setData(Node node) {
-		Transformer t;
-		StringWriter sw = new StringWriter();
+		Transformer transformer;
+		StringWriter stringWriter = new StringWriter();
 		try {
-			t = TransformerFactory.newInstance().newTransformer();
-			t.transform(new DOMSource(node), new StreamResult(sw));
+			transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.transform(new DOMSource(node), new StreamResult(stringWriter));
 
 		} catch (TransformerException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 
-		this.data = sw.toString();
+		this.data = stringWriter.toString();
 	}
 
-	public static List<Record> parseRecordFromXML(String path) {
+	/**
+	 * Parses the records from a XML node
+	 * @param filePath - the XML file path
+	 * @return the list of records
+	 */
+	public static List<Record> parseRecordFromXML(String filePath) {
 		List<Record> listaRecords = new ArrayList<Record>();
 
-		// objetos necessários à leitura do XML
+		// objects requires for XML reading
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		Document myDoc;
 
-		// lista de nós (records) do XML
+		// XML node (records) list
 		NodeList listRecords;
 
 		try {
 			db = dbf.newDocumentBuilder();
-			myDoc = db.parse(new File(path));
-			// inicialização da lista de registros
+			myDoc = db.parse(new File(filePath));
+			// query list initialization
 			listRecords = myDoc.getElementsByTagName("RECORD");
 
 			for (int i = 0; i < listRecords.getLength(); i++) {
 
-				// instancia o record a ser persistido
+				// instantiate the record object
 				Record record = new Record();
 
-				// captura o record e seu conteúdo
+				// capture the record node and its content
 				Node nodeRecord = listRecords.item(i);
-
 				NodeList recordContents = nodeRecord.getChildNodes();
-
 				record.setData(nodeRecord);
 
-				// percorre o conteúdo capturado do record
+				// explore content captured from the record
 				for (int j = 0; j < recordContents.getLength(); j++) {
 
-					// captura o item do record
+					// capture record item
 					Node recordItem = recordContents.item(j);
 
-					// captura o item conforme seu nome
+					// capture an item according to its name
 					if (recordItem.getNodeName().equals("RECORDNUM")) {
 						record.setId(Integer.parseInt(recordItem
 								.getFirstChild().getNodeValue().trim()));
@@ -150,32 +154,37 @@ public class Record {
 								.getNodeValue());
 					}
 				}
-				// persiste o conteúdo capturado do record
 				listaRecords.add(record);
 			}
 		} catch (SAXException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
+			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return listaRecords;
 	}
 	
-	/*
-	 * popula a lista de termos: titleTerms, aztractTerms
-	 * baseada nas regras de um textProcessor
+	/**
+	 * Populates the list of terms (titleTerms, aztractTerms)
+	 * based on textProcessor rules
+	 * @param textProcessor - a text processor
 	 */
 	public void processText(TextPreprocessing textProcessor) {
 		List<String> tempOriginal = new Vector<String>();
 		
-		System.out.println("record: "+id);
+		System.out.println("Record: " + id);
 		
-		if (abztract == null) abztract = "";
+		if (abztract == null) {
+			abztract = "";
+		}
 		
-		//System.out.println("title original: "+title);
-		//System.out.println("abstract original: "+abztract);
+		//System.out.println("Title original: "+title);
+		//System.out.println("Abstract original: "+abztract);
 		
 		String tempTitle = title.toUpperCase();
 		String tempAbztract = abztract.toUpperCase();
@@ -185,11 +194,11 @@ public class Record {
 		
 		tempOriginal = textProcessor.removeStopWords(tempTitle);
 		titleTerms = textProcessor.applyPorterStemmer(tempOriginal);
-		//System.out.println("title novo: "+title);
+		//System.out.println("Title novo: "+title);
 		
 		tempOriginal = textProcessor.removeStopWords(tempAbztract);
 		abztractTerms = textProcessor.applyPorterStemmer(tempOriginal);
-		//System.out.println("title novo: "+abztract);
+		//System.out.println("Abstract novo: "+abztract);
 	}
 
 }

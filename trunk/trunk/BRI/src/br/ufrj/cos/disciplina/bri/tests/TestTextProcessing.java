@@ -4,13 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import br.ufrj.cos.disciplina.bri.algorithms.TextPreprocessing;
+import br.ufrj.cos.disciplina.bri.alg.TextPreprocessing;
 
 public class TestTextProcessing {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		String string = new String("The quick brown fox jumps over the lazy dog mating ocurring");
 		
