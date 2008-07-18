@@ -3,6 +3,7 @@ package br.ufrj.cos.disciplina.bri.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,6 +20,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import br.ufrj.cos.disciplina.bri.algorithm.TextPreprocessing;
 
 @Entity
 public class Query {
@@ -28,6 +32,9 @@ public class Query {
 	private String question;
 	@OneToMany(cascade = CascadeType.ALL)
 	List<Evaluation> evaluations;
+	
+	@Transient
+	private List<String> questionsTerms;
 
 	public Query() {
 
@@ -47,6 +54,7 @@ public class Query {
 
 	public void setQuestion(String question) {
 		this.question = question;
+		this.questionsTerms = TextPreprocessing.preProcessText(question);
 	}
 	
 	public void setEvaluations(List<Evaluation> evaluations) {
@@ -155,5 +163,24 @@ public class Query {
 			}			
 		}
 		return listOfEvaluations;
+	}
+	
+	public int getTermOcurrOnQuestion(String term) {
+		int counter = 0;
+		if (questionsTerms.contains(term)) {
+			for (Iterator<String> iterator = questionsTerms.iterator(); iterator.hasNext();) {
+				if (iterator.next().equals(term))
+					counter++;
+			}
+		}
+		return counter;
+	}
+	
+	public List<String> getQuestionsTerms() {
+		return questionsTerms;
+	}
+	
+	public void setQuestionsTerms(List<String> questionsTerms) {
+		this.questionsTerms = questionsTerms;
 	}
 }
