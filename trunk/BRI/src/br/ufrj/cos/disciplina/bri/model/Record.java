@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -71,6 +72,7 @@ public class Record {
 
 	public void setTitle(String title) {
 		this.title = title;
+		this.titleTerms = TextPreprocessing.preProcessText(title);
 	}
 
 	public String getAbztract() {
@@ -79,6 +81,7 @@ public class Record {
 
 	public void setAbztract(String abztract) {
 		this.abztract = abztract;
+		this.abztractTerms = TextPreprocessing.preProcessText(abztract);
 	}
 
 	public String getData() {
@@ -90,59 +93,55 @@ public class Record {
 	}
 
 	public void setData(Node node) {
-		Transformer transformer;
-		StringWriter stringWriter = new StringWriter();
+		Transformer t;
+		StringWriter sw = new StringWriter();
 		try {
-			transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.transform(new DOMSource(node), new StreamResult(stringWriter));
+			t = TransformerFactory.newInstance().newTransformer();
+			t.transform(new DOMSource(node), new StreamResult(sw));
 
 		} catch (TransformerException e) {
-			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 
-		this.data = stringWriter.toString();
+		this.data = sw.toString();
 	}
 
-	/**
-	 * Parses the records from a XML node
-	 * @param filePath - the XML file path
-	 * @return the list of records
-	 */
-	public static List<Record> parseRecordFromXML(String filePath) {
+	public static List<Record> parseRecordFromXML(String path) {
 		List<Record> listaRecords = new ArrayList<Record>();
 
-		// objects requires for XML reading
+		// objetos necessários à leitura do XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		Document myDoc;
 
-		// XML node (records) list
+		// lista de nós (records) do XML
 		NodeList listRecords;
 
 		try {
 			db = dbf.newDocumentBuilder();
-			myDoc = db.parse(new File(filePath));
-			// query list initialization
+			myDoc = db.parse(new File(path));
+			// inicialização da lista de registros
 			listRecords = myDoc.getElementsByTagName("RECORD");
 
 			for (int i = 0; i < listRecords.getLength(); i++) {
 
-				// instantiate the record object
+				// instancia o record a ser persistido
 				Record record = new Record();
 
-				// capture the record node and its content
+				// captura o record e seu conteúdo
 				Node nodeRecord = listRecords.item(i);
+
 				NodeList recordContents = nodeRecord.getChildNodes();
+
 				record.setData(nodeRecord);
 
-				// explore content captured from the record
+				// percorre o conteúdo capturado do record
 				for (int j = 0; j < recordContents.getLength(); j++) {
 
-					// capture record item
+					// captura o item do record
 					Node recordItem = recordContents.item(j);
 
-					// capture an item according to its name
+					// captura o item conforme seu nome
 					if (recordItem.getNodeName().equals("RECORDNUM")) {
 						record.setId(Integer.parseInt(recordItem
 								.getFirstChild().getNodeValue().trim()));
@@ -154,51 +153,54 @@ public class Record {
 								.getNodeValue());
 					}
 				}
+				// persiste o conteúdo capturado do record
 				listaRecords.add(record);
 			}
 		} catch (SAXException e) {
-			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
-			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return listaRecords;
 	}
-	
-	/**
-	 * Populates the list of terms (titleTerms, aztractTerms)
-	 * based on textProcessor rules
-	 * @param textProcessor - a text processor
-	 */
-	public void processText(TextPreprocessing textProcessor) {
-		List<String> tempOriginal = new Vector<String>();
-		
-		System.out.println("Record: " + id);
-		
-		if (abztract == null) {
-			abztract = "";
-		}
-		
-		//System.out.println("Title original: "+title);
-		//System.out.println("Abstract original: "+abztract);
-		
-		String tempTitle = title.toUpperCase();
-		String tempAbztract = abztract.toUpperCase();
-		
-		tempTitle = textProcessor.removeSpecialCharacters(tempTitle);			
-		tempAbztract = textProcessor.removeSpecialCharacters(tempAbztract);
-		
-		tempOriginal = textProcessor.removeStopWords(tempTitle);
-		titleTerms = textProcessor.applyPorterStemmer(tempOriginal);
-		//System.out.println("Title novo: "+title);
-		
-		tempOriginal = textProcessor.removeStopWords(tempAbztract);
-		abztractTerms = textProcessor.applyPorterStemmer(tempOriginal);
-		//System.out.println("Abstract novo: "+abztract);
+
+	public List<String> getTitleTerms() {
+		return titleTerms;
 	}
 
+	public void setTitleTerms(List<String> titleTerms) {
+		this.titleTerms = titleTerms;
+	}
+
+	public List<String> getAbztractTerms() {
+		return abztractTerms;
+	}
+
+	public void setAbztractTerms(List<String> abztractTerms) {
+		this.abztractTerms = abztractTerms;
+	}
+	
+	public int getTermOcurrOnTitle(String term) {
+		int counter = 0;
+		if (titleTerms.contains(term)) {
+			for (Iterator<String> iterator = titleTerms.iterator(); iterator.hasNext();) {
+				if (iterator.next().equals(term))
+					counter++;
+			}
+		}
+		return counter;
+	}
+	
+	public int getTermOcurrOnAbztract(String term) {
+		int counter = 0;
+		if (abztractTerms.contains(term)) {
+			for (Iterator<String> iterator = abztractTerms.iterator(); iterator.hasNext();) {
+				if (iterator.next().equals(term))
+					counter++;
+			}
+		}
+		return counter;
+	}
 }

@@ -3,6 +3,7 @@ package br.ufrj.cos.disciplina.bri;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import br.ufrj.cos.disciplina.bri.algorithm.TextPreprocessing;
 import br.ufrj.cos.disciplina.bri.model.Query;
@@ -23,6 +24,8 @@ public class ProcessedSearch {
 		// Lista de Queries
 		List<Query> listQueries = new ArrayList<Query>();
 
+		System.out.println("Reading record and queries from xml...");
+		
 		listRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf74.xml"));
 		listRecords.addAll(Record
@@ -38,20 +41,11 @@ public class ProcessedSearch {
 		
 		listQueries.addAll(Query.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
 		
-		/*
-		 * Processa Strings TITLE, ABSTRACT, AND QUERIES
-		 * 1) conversão para maiúsculas
-		 * 2) Eliminação de caracteres diferentes de A-Z
-		 * 3) Eliminação de Stop words
-		 * 4) Stemming de Porter
-		 */
-		TextPreprocessing textProcessor = new TextPreprocessing();
-		textProcessor.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
+		System.out.println("Finished reading...");
 		
-		//processa o conteudo de cada record lido dos documentos XML
 		for (Iterator<Record> iterator = listRecords.iterator(); iterator.hasNext();) {
 			Record record = iterator.next();
-			record.processText(textProcessor);
+			System.out.println(record.getTitleTerms());
 		}
 		
 	}
