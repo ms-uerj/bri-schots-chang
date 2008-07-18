@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Vector;
 
 import br.ufrj.cos.disciplina.bri.algorithm.TextPreprocessing;
+import br.ufrj.cos.disciplina.bri.indexing.Indexing;
+import br.ufrj.cos.disciplina.bri.indexing.model.RadixInfo;
 import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 
@@ -43,10 +45,51 @@ public class ProcessedSearch {
 		
 		System.out.println("Finished reading...");
 		
-		for (Iterator<Record> iterator = listRecords.iterator(); iterator.hasNext();) {
-			Record record = iterator.next();
-			System.out.println(record.getTitleTerms());
+		Indexing indexingRecords = new Indexing();
+		Indexing indexingQueries = new Indexing();
+		String term;
+		
+		for (Iterator<Record> iteratorRecord = listRecords.iterator(); iteratorRecord.hasNext();) {
+			
+			Record record = iteratorRecord.next();
+			
+			//System.out.println(record.getId());
+			//System.out.println("title: "+record.getTitle());
+			//System.out.println("terms title: "+record.getTitleTerms());
+			//System.out.println("abztract: "+record.getAbztract());
+			//System.out.println("terms title: "+record.getAbztractTerms());
+			
+			for (Iterator<String> itTermsTitle = record.getTitleTerms().iterator(); itTermsTitle.hasNext();) {
+				term = itTermsTitle.next();
+				indexingRecords.addToHash(term, new RadixInfo(record.getId(), record.getTermOcurrOnTitle(term), "title"));
+			}
+			/*for (Iterator<String> itTermsAbztract = record.getAbztractTerms().iterator(); itTermsAbztract.hasNext();) {
+				term = itTermsAbztract.next();
+				indexingHash.addToHash(term, new RadixInfo(record.getId(), record.getTermOcurrOnAbztract(term), "abstract"));
+			}*/
+			
 		}
+		
+		for (Iterator<Query> iteratorQuery = listQueries.iterator(); iteratorQuery.hasNext();) {
+			
+			Query query = iteratorQuery.next();
+			
+			//System.out.println(query.getId());
+			//System.out.println("question: "+query.getQuestion());
+			//System.out.println("terms question: "+query.getQuestionsTerms());
+			
+			for (Iterator<String> itTermsTitle = query.getQuestionsTerms().iterator(); itTermsTitle.hasNext();) {
+				term = itTermsTitle.next();
+				indexingQueries.addToHash(term, new RadixInfo(query.getId(), query.getTermOcurrOnQuestion(term), "question"));
+			}
+			/*for (Iterator<String> itTermsAbztract = record.getAbztractTerms().iterator(); itTermsAbztract.hasNext();) {
+				term = itTermsAbztract.next();
+				indexingHash.addToHash(term, new RadixInfo(record.getId(), record.getTermOcurrOnAbztract(term), "abstract"));
+			}*/
+			
+		}
+		
+		System.out.println("End");
 		
 	}
 

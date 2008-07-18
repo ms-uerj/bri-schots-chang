@@ -34,19 +34,8 @@ public class TextPreprocessing {
 	public String removeSpecialCharacters(String source) {
 		
 		source = source.replaceAll("[^a-zA-Z]"," ");
-		
-		final StringBuilder result = new StringBuilder();
-		final StringCharacterIterator iterator = new StringCharacterIterator(source);
-		char character = iterator.current();
-		while (character != CharacterIterator.DONE) {
-			
-			if (Character.isWhitespace(character) && Character.isWhitespace(iterator.next())) {
-			}else {
-				result.append(character);
-			}
-			character = iterator.next();
-		}
-		return result.toString();
+		source = source.replaceAll("[ ]+"," ");
+		return source;
 	}
 
 	/**

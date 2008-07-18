@@ -9,7 +9,7 @@ public class RadixInfo {
 	private int numberOfOccurrences;
 	
 	// specifies the section of the document (TITLE, ABSTRACT)
-	private int part;
+	private String part;
 
 	// TODO a double variable for weight??? is it necessary??? see slides
 	
@@ -18,9 +18,10 @@ public class RadixInfo {
 	 * @param documentId - indicates what document contains the radix
 	 * @param numberOfOccurrences - show the number of occurrences of the radix in the document 
 	 */
-	public RadixInfo(int documentId, int numberOfOccurrences) {
+	public RadixInfo(int documentId, int numberOfOccurrences, String part) {
 		this.documentId = documentId;
 		this.numberOfOccurrences = numberOfOccurrences;
+		this.part = part;
 	}
 
 	/**
@@ -54,16 +55,20 @@ public class RadixInfo {
 	/**
 	 * @return the part
 	 */
-	public int getPart() {
+	public String getPart() {
 		return part;
 	}
 
 	/**
 	 * @param part the part to set
 	 */
-	public void setPart(int part) {
+	public void setPart(String part) {
 		this.part = part;
 	}
 	
+	@Override
+	public String toString() {
+		return "Record: "+documentId+ "- Ocurr: "+numberOfOccurrences+"- Where: "+part;
+	}
 	
 }

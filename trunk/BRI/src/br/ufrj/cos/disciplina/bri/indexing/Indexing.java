@@ -1,8 +1,11 @@
 package br.ufrj.cos.disciplina.bri.indexing;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
+
+import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 import br.ufrj.cos.disciplina.bri.indexing.model.RadixInfo;
 
@@ -41,6 +44,5 @@ public class Indexing {
 			hash.put(radix, list);
 		}
 	}
-	
 
 }
