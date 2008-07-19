@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import br.ufrj.cos.disciplina.bri.algorithm.VetorialSearch;
+import br.ufrj.cos.disciplina.bri.algorithm.VectorSearch;
 import br.ufrj.cos.disciplina.bri.indexing.Indexing;
 import br.ufrj.cos.disciplina.bri.indexing.model.RadixInfo;
 import br.ufrj.cos.disciplina.bri.model.Query;
@@ -13,34 +13,33 @@ import br.ufrj.cos.disciplina.bri.model.Record;
 public class ProcessedSearch {
 
 	/**
+	 * Reads data from XML files and populate hash tables,
+	 * applying text preprocessing rules to its content.
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		/*
-		 * Lê os dados dos documentos XML.
-		 */
-		// Lista de Records
-		List<Record> listRecords = new ArrayList<Record>();
-		// Lista de Queries
-		List<Query> listQueries = new ArrayList<Query>();
+		// records list
+		List<Record> listOfRecords = new ArrayList<Record>();
+		// queries list
+		List<Query> listOfQueries = new ArrayList<Query>();
 
-		System.out.println("Reading record and queries from xml...");
+		System.out.println("Reading record and queries from XML...");
 
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf74.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf75.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf76.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf77.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf78.xml"));
-		listRecords.addAll(Record
+		listOfRecords.addAll(Record
 				.parseRecordFromXML("resources/inputs/cf79.xml"));
 
-		listQueries.addAll(Query
+		listOfQueries.addAll(Query
 				.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
 
 		System.out.println("Finished reading...");
@@ -48,11 +47,9 @@ public class ProcessedSearch {
 		Indexing indexingRecords = new Indexing();
 		String term;
 
-		/*
-		 * popula tabela hash com os termos dos records (Titles)
-		 */
-		//TODO: repetir processo para abstract 
-		for (Iterator<Record> iteratorRecord = listRecords.iterator(); iteratorRecord.hasNext();) {
+		// populate hash table with records terms (titles)
+		// TODO: repetir processo para abstract 
+		for (Iterator<Record> iteratorRecord = listOfRecords.iterator(); iteratorRecord.hasNext();) {
 
 			Record record = iteratorRecord.next();
 
@@ -62,9 +59,9 @@ public class ProcessedSearch {
 			// System.out.println("abztract: "+record.getAbztract());
 			// System.out.println("terms title: "+record.getAbztractTerms());
 
-			for (Iterator<String> itTermsTitle = record.getTitleTerms()
-					.iterator(); itTermsTitle.hasNext();) {
-				term = itTermsTitle.next();
+			for (Iterator<String> iteratorTermsTitle = record.getTitleTerms()
+					.iterator(); iteratorTermsTitle.hasNext();) {
+				term = iteratorTermsTitle.next();
 				indexingRecords.addToHash(term, new RadixInfo(record.getId(),
 						record.getTfOnTitle(term), "title"));
 			}
@@ -72,7 +69,7 @@ public class ProcessedSearch {
 		
 		
 		
-		for (Iterator<Query> iteratorQuery = listQueries.iterator(); iteratorQuery.hasNext();) {
+		for (Iterator<Query> iteratorQuery = listOfQueries.iterator(); iteratorQuery.hasNext();) {
 
 			Query query = iteratorQuery.next();
 
@@ -80,21 +77,12 @@ public class ProcessedSearch {
 			// System.out.println("question: "+query.getQuestion());
 			// System.out.println("terms question: "+query.getQuestionsTerms());
 
-			/*
-			 * Buscar cada query no Indexing de records
-			 * a partir de ou de termos e similaridade entre os vetores.
-			 */	
-			VetorialSearch search = new VetorialSearch();
-			search.vetorialSearch(query.getQuestionsTerms(), indexingRecords, listRecords.size());
+			// search each query on records Indexing using
+			// logic "OR" between terms and similarity between vectors
+			VectorSearch search = new VectorSearch();
+			search.vectorSearch(query.getQuestionsTerms(), indexingRecords, listOfRecords.size());
 			
 		}
-
-		/*
-		 * 
-		 */
-
 		System.out.println("End");
-
 	}
-
 }
