@@ -6,21 +6,19 @@ public class RadixInfo {
 	private int documentId;
 	
 	// shows how much times the radix occurs in the document
-	private int numberOfOccurrences;
+	private double tf;
 	
 	// specifies the section of the document (TITLE, ABSTRACT)
 	private String part;
 
-	// TODO a double variable for weight??? is it necessary??? see slides
-	
 	/**
 	 * Constructor method
 	 * @param documentId - indicates what document contains the radix
 	 * @param numberOfOccurrences - show the number of occurrences of the radix in the document 
 	 */
-	public RadixInfo(int documentId, int numberOfOccurrences, String part) {
+	public RadixInfo(int documentId, double tf, String part) {
 		this.documentId = documentId;
-		this.numberOfOccurrences = numberOfOccurrences;
+		this.tf = tf;
 		this.part = part;
 	}
 
@@ -38,20 +36,15 @@ public class RadixInfo {
 		this.documentId = documentId;
 	}
 
-	/**
-	 * @return the number of occurrences of the radix in the document
-	 */
-	public int getNumberOfOccurrences() {
-		return numberOfOccurrences;
+	public void setTf(double tf) {
+		this.tf = tf;
+	}
+	
+	public double getTf() {
+		return tf;
 	}
 
-	/**
-	 * @param numberOfOccurrences the number of occurrences to set
-	 */
-	public void setNumberOfOccurrences(int numberOfOccurrences) {
-		this.numberOfOccurrences = numberOfOccurrences;
-	}
-
+	
 	/**
 	 * @return the part
 	 */
@@ -66,9 +59,10 @@ public class RadixInfo {
 		this.part = part;
 	}
 	
+
 	@Override
 	public String toString() {
-		return "Record: "+documentId+ "- Ocurr: "+numberOfOccurrences+"- Where: "+part;
+		return "Record: "+documentId+ " - tf: "+tf+" - Where: "+part;
 	}
 	
 }

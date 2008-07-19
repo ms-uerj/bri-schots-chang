@@ -9,7 +9,7 @@ import br.ufrj.cos.disciplina.bri.model.Query;
 import br.ufrj.cos.disciplina.bri.model.Record;
 // import br.ufrj.cos.disciplina.bri.persistence.TestConnection;
 
-public class Main {
+public class PrecisionRecallMySQL {
 
 	public static void main(String[] args) {
 
