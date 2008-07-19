@@ -5,7 +5,7 @@ public class RadixInfo {
 	// shows the document id where a radix occurs
 	private int documentId;
 	
-	// shows how much times the radix occurs in the document
+	// shows the frequency of a radix term in the document
 	private double tf;
 	
 	// specifies the section of the document (TITLE, ABSTRACT)
@@ -36,10 +36,16 @@ public class RadixInfo {
 		this.documentId = documentId;
 	}
 
+	/**
+	 * @param tf - the term frequency to set
+	 */
 	public void setTf(double tf) {
 		this.tf = tf;
 	}
 	
+	/**
+	 * @return the term frequency
+	 */
 	public double getTf() {
 		return tf;
 	}
@@ -59,10 +65,8 @@ public class RadixInfo {
 		this.part = part;
 	}
 	
-
 	@Override
 	public String toString() {
-		return "Record: "+documentId+ " - tf: "+tf+" - Where: "+part;
+		return "Record: " + documentId + " - tf: " + tf + " - Where: " + part;
 	}
-	
 }

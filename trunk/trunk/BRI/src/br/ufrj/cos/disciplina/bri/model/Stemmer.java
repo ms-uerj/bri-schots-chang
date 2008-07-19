@@ -11,6 +11,9 @@ public class Stemmer {
 	private int j, k;
 	private static final int INC = 50; // unit of size whereby b is increased
 
+	/**
+	 * Default constructor method
+	 */
 	public Stemmer() {
 		word = new char[INC];
 		i = 0;

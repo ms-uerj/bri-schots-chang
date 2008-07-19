@@ -4,12 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Vector;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,53 +44,119 @@ public class Record {
 	@Transient
 	private List<String> abztractTerms;
 	
+	/**
+	 * Default constructor method
+	 */
 	public Record() {
 		titleTerms = new ArrayList<String>();
 		abztractTerms = new ArrayList<String>();
 	}
 
-	public Record(int id, String title, String abztract, String document) {
-		super();
+	/**
+	 * Optional constructor method
+	 * @param id - the record id to set
+	 * @param title - the record title to set
+	 * @param abztract - the record abstract to set
+	 * @param data - the record data to set
+	 */
+	public Record(int id, String title, String abztract, String data) {
+		// never used
 		this.id = id;
 		this.title = title;
 		this.abztract = abztract;
-		this.data = document;
+		this.data = data;
+		
+		titleTerms = new ArrayList<String>();
+		abztractTerms = new ArrayList<String>();
 	}
 
+	/**
+	 * @return the record id
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @param id - the record id to set
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return the record title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * @param title - the record title to set
+	 */
 	public void setTitle(String title) {
 		this.title = title;
-		this.titleTerms = TextPreprocessing.preProcessText(title);
 	}
 
+	/**
+	 * @return the record abstract
+	 */
 	public String getAbztract() {
 		return abztract;
 	}
 
+	/**
+	 * @param abztract - the record abstract to set
+	 */
 	public void setAbztract(String abztract) {
 		this.abztract = abztract;
-		this.abztractTerms = TextPreprocessing.preProcessText(abztract);
 	}
 
+	/**
+	 * @return the record data
+	 */
 	public String getData() {
 		return data;
 	}
 
+	/**
+	 * @param data - the record data to set
+	 */
 	public void setData(String data) {
 		this.data = data;
 	}
+	
+	/**
+	 * @return the record title terms
+	 */
+	public List<String> getTitleTerms() {
+		return titleTerms;
+	}
 
+	/**
+	 * @param titleTerms - the record title terms to set 
+	 */
+	public void setTitleTerms(List<String> titleTerms) {
+		this.titleTerms = titleTerms;
+	}
+
+	/**
+	 * @return the record abstract terms
+	 */
+	public List<String> getAbztractTerms() {
+		return abztractTerms;
+	}
+
+	/**
+	 * @param abztractTerms - the record abstract terms to set
+	 */
+	public void setAbztractTerms(List<String> abztractTerms) {
+		this.abztractTerms = abztractTerms;
+	}
+
+	/**
+	 * @param node - the record node to be used to set data
+	 */
 	public void setData(Node node) {
 		Transformer t;
 		StringWriter sw = new StringWriter();
@@ -109,6 +171,11 @@ public class Record {
 		this.data = sw.toString();
 	}
 
+	/**
+	 * TODO correct comment
+	 * @param path
+	 * @return
+	 */
 	public static List<Record> parseRecordFromXML(String path) {
 		List<Record> listaRecords = new ArrayList<Record>();
 
@@ -149,11 +216,14 @@ public class Record {
 						record.setId(Integer.parseInt(recordItem
 								.getFirstChild().getNodeValue().trim()));
 					} else if (recordItem.getNodeName().equals("TITLE")) {
-						record.setTitle(recordItem.getFirstChild()
-								.getNodeValue());
+						String tempTitle = recordItem.getFirstChild().getNodeValue();
+						record.setTitle(tempTitle);
+						record.setTitleTerms(TextPreprocessing.preProcessText(tempTitle));
+						
 					} else if (recordItem.getNodeName().equals("ABSTRACT")) {
-						record.setAbztract(recordItem.getFirstChild()
-								.getNodeValue());
+						String tempAbztract = recordItem.getFirstChild().getNodeValue(); 
+						record.setAbztract(tempAbztract);
+						record.setAbztractTerms(TextPreprocessing.preProcessText(tempAbztract));
 					}
 				}
 				// persiste o conteúdo capturado do record
@@ -168,24 +238,9 @@ public class Record {
 		}
 		return listaRecords;
 	}
-
-	public List<String> getTitleTerms() {
-		return titleTerms;
-	}
-
-	public void setTitleTerms(List<String> titleTerms) {
-		this.titleTerms = titleTerms;
-	}
-
-	public List<String> getAbztractTerms() {
-		return abztractTerms;
-	}
-
-	public void setAbztractTerms(List<String> abztractTerms) {
-		this.abztractTerms = abztractTerms;
-	}
 	
-	/*
+	/**
+	 * TODO correct comment
 	 * Número de ocorrências do termo no título
 	 */
 	public double getTfOnTitle(String term) {
@@ -199,7 +254,8 @@ public class Record {
 		return counter/titleTerms.size();
 	}
 	
-	/*
+	/**
+	 * TODO correct comment
 	 * Número de ocorrências do termo no abstract
 	 */
 	
@@ -211,7 +267,7 @@ public class Record {
 					counter++;
 			}
 		}
-		return counter/abztractTerms.size();
+		return (counter / abztractTerms.size());
 	}
 	
 }
