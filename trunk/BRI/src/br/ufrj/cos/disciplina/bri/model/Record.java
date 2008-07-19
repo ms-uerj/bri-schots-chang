@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.persistence.Column;
@@ -43,6 +45,7 @@ public class Record {
 	
 	@Transient
 	private List<String> titleTerms;
+	@Transient
 	private List<String> abztractTerms;
 	
 	public Record() {
@@ -182,25 +185,33 @@ public class Record {
 		this.abztractTerms = abztractTerms;
 	}
 	
-	public int getTermOcurrOnTitle(String term) {
-		int counter = 0;
+	/*
+	 * Número de ocorrências do termo no título
+	 */
+	public double getTfOnTitle(String term) {
+		double counter = 0;
 		if (titleTerms.contains(term)) {
 			for (Iterator<String> iterator = titleTerms.iterator(); iterator.hasNext();) {
 				if (iterator.next().equals(term))
 					counter++;
 			}
 		}
-		return counter;
+		return counter/titleTerms.size();
 	}
 	
-	public int getTermOcurrOnAbztract(String term) {
-		int counter = 0;
+	/*
+	 * Número de ocorrências do termo no abstract
+	 */
+	
+	public double getTfOnAbztract(String term) {
+		double counter = 0;
 		if (abztractTerms.contains(term)) {
 			for (Iterator<String> iterator = abztractTerms.iterator(); iterator.hasNext();) {
 				if (iterator.next().equals(term))
 					counter++;
 			}
 		}
-		return counter;
+		return counter/abztractTerms.size();
 	}
+	
 }

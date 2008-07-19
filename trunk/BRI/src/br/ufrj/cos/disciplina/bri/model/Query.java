@@ -3,8 +3,10 @@ package br.ufrj.cos.disciplina.bri.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,9 +36,10 @@ public class Query {
 	List<Evaluation> evaluations;
 	
 	@Transient
-	private List<String> questionsTerms;
+	private Set<String> questionsTerms;
 
 	public Query() {
+		questionsTerms = new HashSet<String>();
 
 	}
 
@@ -54,7 +57,7 @@ public class Query {
 
 	public void setQuestion(String question) {
 		this.question = question;
-		this.questionsTerms = TextPreprocessing.preProcessText(question);
+		this.questionsTerms.addAll(TextPreprocessing.preProcessText(question));
 	}
 	
 	public void setEvaluations(List<Evaluation> evaluations) {
@@ -165,22 +168,11 @@ public class Query {
 		return listOfEvaluations;
 	}
 	
-	public int getTermOcurrOnQuestion(String term) {
-		int counter = 0;
-		if (questionsTerms.contains(term)) {
-			for (Iterator<String> iterator = questionsTerms.iterator(); iterator.hasNext();) {
-				if (iterator.next().equals(term))
-					counter++;
-			}
-		}
-		return counter;
-	}
 	
-	public List<String> getQuestionsTerms() {
-		return questionsTerms;
-	}
-	
-	public void setQuestionsTerms(List<String> questionsTerms) {
+	public void setQuestionsTerms(HashSet<String> questionsTerms) {
 		this.questionsTerms = questionsTerms;
+	}
+	public Set<String> getQuestionsTerms() {
+		return questionsTerms;
 	}
 }
