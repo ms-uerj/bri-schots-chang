@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -38,32 +37,53 @@ public class Query {
 	@Transient
 	private Set<String> questionsTerms;
 
+	/**
+	 * Default constructor method
+	 */
 	public Query() {
 		questionsTerms = new HashSet<String>();
-
 	}
 
+	/**
+	 * @return the query id
+	 */
 	public int getId() {
 		return id;
 	}
 
+	
+	/**
+	 * @param id - the id to set
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return the question of the query
+	 */
 	public String getQuestion() {
 		return question;
 	}
 
+	/**
+	 * Sets the question to the input string value
+	 * @param question - the question to set
+	 */
 	public void setQuestion(String question) {
 		this.question = question;
-		this.questionsTerms.addAll(TextPreprocessing.preProcessText(question));
 	}
 	
+	/**
+	 * @param evaluations - the query evaluations to set
+	 */
 	public void setEvaluations(List<Evaluation> evaluations) {
 		this.evaluations = evaluations;
 	}
 	
+	/**
+	 * @return the query evaluations
+	 */
 	public List<Evaluation> getEvaluations() {
 		return evaluations;
 	}
@@ -111,8 +131,9 @@ public class Query {
 						query.setId(Integer.parseInt(queryItem.getFirstChild()
 								.getNodeValue().trim()));
 					} else if (queryItem.getNodeName().equals("QueryText")) {
-						query.setQuestion(queryItem.getFirstChild()
-								.getNodeValue());
+						String tempQuestion = queryItem.getFirstChild().getNodeValue(); 
+						query.setQuestion(tempQuestion);
+						query.getQuestionsTerms().addAll(TextPreprocessing.preProcessText(tempQuestion));						
 					} else if (queryItem.getNodeName().equals("Records")) {
 						query.evaluations = Query
 								.parseEvaluationFromXML(queryItem);
@@ -169,9 +190,16 @@ public class Query {
 	}
 	
 	
-	public void setQuestionsTerms(HashSet<String> questionsTerms) {
+	/**
+	 * @param questionsTerms - a set with the question terms to set
+	 */
+	public void setQuestionsTerms(Set<String> questionsTerms) {
 		this.questionsTerms = questionsTerms;
 	}
+	
+	/**
+	 * @return a set with the questions terms
+	 */
 	public Set<String> getQuestionsTerms() {
 		return questionsTerms;
 	}

@@ -1,11 +1,9 @@
 package br.ufrj.cos.disciplina.bri.algorithm;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -127,17 +125,14 @@ public class VetorialSearch {
 				Integer word1 = (Integer) e1.getKey();
 				Integer word2 = (Integer) e2.getKey();
 
-				// Sort String in an alphabetical order
+				// Sort string in an ascending order
 				result = word1.compareTo(word2);
 
 			} else {
 				// Sort values in a descending order
 				result = value2.compareTo(value1);
 			}
-
 			return result;
 		}
-
 	}
-
 }

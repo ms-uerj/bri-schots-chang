@@ -4,31 +4,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Point {
+	
 	private double xRecall;
 	private double yPrecision;
 	
+	
+	/**
+	 * Default constructor method
+	 * @see br.ufrj.cos.disciplina.bri.model.Point#Point(double xRecall, double yPrecision)
+	 */
 	public Point() {
-		
+		// never used
 	}
 	
+	/**
+	 * Constructor method
+	 * @param xRecall - the recall (x coordinate point)
+	 * @param yPrecision - the precision (y coordinate point)
+	 */
 	public Point(double xRecall, double yPrecision) {
 		super();
 		this.xRecall = xRecall;
 		this.yPrecision = yPrecision;
 	}
 
+	/**
+	 * @return recall (x coordinate point)
+	 */
 	public double getXRecall() {
 		return xRecall;
 	}
 	
+	/**
+	 * @param recall - the recall (x coordinate point) to set
+	 */
 	public void setXRecall(double recall) {
 		xRecall = recall;
 	}
 	
+	/**
+	 * @return precision (y coordinate point)
+	 */
 	public double getYPrecision() {
 		return yPrecision;
 	}
 	
+	/**
+	 * @param precision - the precision (y coordinate point) to set
+	 */
 	public void setYPrecision(double precision) {
 		yPrecision = precision;
 	}

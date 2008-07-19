@@ -3,12 +3,9 @@ package br.ufrj.cos.disciplina.bri.algorithm;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -18,10 +15,11 @@ public class TextPreprocessing {
 
 	public List<String> listOfStopWords;
 
+	/**
+	 * Default constructor method 
+	 */
 	public TextPreprocessing() {
-		// based on the list found at http://www.ranks.nl/tools/stopwords.html
 		listOfStopWords = new Vector<String>();
-
 	}
 
 	/**
@@ -91,7 +89,11 @@ public class TextPreprocessing {
 		return result;
 	}
 
-	public boolean loadListOfStopWords(String filePath) {
+	/**
+	 * Loads the list of stop words from the input file path
+	 * @param filePath - the file path to the list
+	 */
+	public void loadListOfStopWords(String filePath) {
 		try {
 			// Open the file that is the first
 			// command line parameter
@@ -108,29 +110,33 @@ public class TextPreprocessing {
 			}
 			// Close the input stream
 			in.close();
-		} catch (Exception e) {// Catch exception if any
+		} catch (FileNotFoundException e) {
 			System.err.println("Error: " + e.getMessage());
-			return false;
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Error: " + e.getMessage());
+			e.printStackTrace();
 		}
-		return true;
 	}
 	
-	
+	/**
+	 * Executes text preprocessing with the input string text
+	 * @param text - the text to be preprocessed 
+	 * @return the terms obtained by text preprocessing
+	 */
 	public static List<String> preProcessText(String text) {
-		List<String> tempOriginal = new Vector<String>();
-		List<String> terms;
 		
 		TextPreprocessing textProcessor = new TextPreprocessing();
 		textProcessor.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
 		
-		if (text == null) text = "";
+		if (text == null) {
+			text = "";
+		}
 		
 		String tempText = text.toUpperCase();
-		
 		tempText = textProcessor.removeSpecialCharacters(tempText);			
-		
-		tempOriginal = textProcessor.removeStopWords(tempText);
-		terms = textProcessor.applyPorterStemmer(tempOriginal);
+		List<String> tempOriginal = textProcessor.removeStopWords(tempText);
+		List<String> terms = textProcessor.applyPorterStemmer(tempOriginal);
 		
 		return terms;
 	}
