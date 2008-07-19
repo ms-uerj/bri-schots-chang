@@ -13,18 +13,31 @@ import java.util.Set;
 import br.ufrj.cos.disciplina.bri.indexing.Indexing;
 import br.ufrj.cos.disciplina.bri.indexing.model.RadixInfo;
 
-public class VetorialSearch {
+public class VectorSearch {
 	Hashtable<Integer, List<Double>> docMatrix;
 	
-	public VetorialSearch() {
+	/**
+	 * Default constructor method.
+	 */
+	public VectorSearch() {
 		docMatrix = new Hashtable<Integer, List<Double>>();
 	}
 
-	public List<Integer> vetorialSearch(Set<String> questionTerms, Indexing documents, int numberDocs) {
+	/**
+	 * Executes vector search.
+	 * @param questionTerms
+	 * @param documents
+	 * @param numberOfDocs
+	 * @return
+	 */
+	public List<Integer> vectorSearch(Set<String> questionTerms, Indexing documents, int numberOfDocs) {
 		List<Integer> result = new ArrayList<Integer>();
 		
-		int posicao = 0;
+		int position = 0;
 		
+		// creating a temporary list so that
+		// it won't be necessary creating a loop
+		// inside another loop
 		List<Double> temporaryList = new ArrayList<Double>();
 		for (int i = 0; i < questionTerms.size(); i++) {
 			temporaryList.add(0.0);		
@@ -36,8 +49,8 @@ public class VetorialSearch {
 			double idf;
 			
 			if (documents.getHash().containsKey(term)) {
-				double numberRelevantDocs = documents.getHash().get(term).size();
-				idf = numberDocs / numberRelevantDocs;
+				double numberOfRelevantDocs = documents.getHash().get(term).size();
+				idf = numberOfDocs / numberOfRelevantDocs;
 				idf = Math.log(idf) / Math.log(2);
 				
 				List<RadixInfo> listDocInfo = documents.getHash().get(term);
@@ -50,10 +63,10 @@ public class VetorialSearch {
 					if(!docMatrix.containsKey(doc.getDocumentId())){
 						docMatrix.put(doc.getDocumentId(), new ArrayList<Double>(temporaryList));
 					}
-					docMatrix.get(doc.getDocumentId()).add(posicao, tfIdf);
+					docMatrix.get(doc.getDocumentId()).add(position, tfIdf);
 				}
 			} 
-			posicao++;
+			position++;
 		}
 		
 		Hashtable<Integer, Double> ranking = new Hashtable<Integer, Double>();
@@ -63,27 +76,33 @@ public class VetorialSearch {
 			ranking.put(key, calculateSimilarity(docMatrix.get(key)));
 		}
 		
-		/*
-		 * Ordenando pelo valor de similaridade
-		 */
-
+		// ordering by similarity rating
 		ArrayList tempRanking = new ArrayList(ranking.entrySet());
 		
 		Collections.sort(tempRanking, new SimilarityComparator());
 		
-		Iterator itr = tempRanking.iterator();
-		while(itr.hasNext()){
+		Iterator rankingIterator = tempRanking.iterator();
+		while(rankingIterator.hasNext()){
 			
-			Map.Entry e = (Map.Entry)itr.next();
+			Map.Entry e = (Map.Entry)rankingIterator.next();
 			result.add((Integer)e.getKey());
 		}
-		
 		return result;
 	}
 	
 
-	public double calculateSimilarity(List<Double> docRelevantTerms) {
-		double similarity;
+	public double calculateSimilarity(List<Double> documentsWithRelevantTerms) {
+		
+		double sum = 0.0;
+		double normDoc = 0.0;
+		double normQuestion = 0.0;
+		
+		for (int i = 0; i < documentsWithRelevantTerms.size(); i++) {
+			sum += documentsWithRelevantTerms.get(i);
+			normDoc += Math.pow(documentsWithRelevantTerms.get(i), 2);
+		}
+		normQuestion = Math.sqrt(documentsWithRelevantTerms.size());
+		normDoc = Math.sqrt(normDoc);
 		
 		/*
 		 * X * Y / |X|*|Y|
@@ -92,19 +111,7 @@ public class VetorialSearch {
 		 * Somatório(xi)[1..n] / sqrt(som(xi^2)[1..n])) * sqrt(n)
 		 */
 		
-		double somatorio = 0.0;
-		double normaDoc = 0.0;
-		double normaQuestion = 0.0;
-		
-		for (int i = 0; i < docRelevantTerms.size(); i++) {
-			somatorio += docRelevantTerms.get(i);
-			normaDoc += Math.pow(docRelevantTerms.get(i), 2);
-		}
-		normaQuestion = Math.sqrt(docRelevantTerms.size());
-		normaDoc = Math.sqrt(normaDoc);
-		
-		similarity = somatorio/ (normaDoc * normaQuestion);
-		
+		double similarity = (sum / (normDoc * normQuestion));
 		return similarity;
 	}
 	
@@ -125,11 +132,11 @@ public class VetorialSearch {
 				Integer word1 = (Integer) e1.getKey();
 				Integer word2 = (Integer) e2.getKey();
 
-				// Sort string in an ascending order
+				// sort string in an ascending order
 				result = word1.compareTo(word2);
 
 			} else {
-				// Sort values in a descending order
+				// sort values in a descending order
 				result = value2.compareTo(value1);
 			}
 			return result;

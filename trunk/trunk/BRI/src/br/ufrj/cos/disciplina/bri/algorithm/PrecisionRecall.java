@@ -118,7 +118,7 @@ public class PrecisionRecall {
 		}
 		for (int i = 0; i < precisions.size(); i++) {
 			listOfPoints.add(new Point(recalls.get(i), precisions.get(i)));
-			System.out.println(recalls.get(i)+"\t"+precisions.get(i));
+			System.out.println(recalls.get(i) + "\t" + precisions.get(i));
 		}
 		
 		return listOfPoints;

@@ -23,26 +23,24 @@ public class TextPreprocessing {
 	}
 
 	/**
-	 * Removes all special characters from the input string, if any
-	 * 
-	 * @param source -
-	 *            a string
+	 * Removes all special characters from the input string, if any.
+	 * @param source - a string
 	 * @return the content of the input string without special characters
 	 */
 	public String removeSpecialCharacters(String source) {
-		
+		// replaces all the "non-letter" characters by a whitespace
 		source = source.replaceAll("[^a-zA-Z]"," ");
+		// removes excessive whitespace occurrences
 		source = source.replaceAll("[ ]+"," ");
 		return source;
 	}
 
 	/**
-	 * Removes all special characters from the input string, if any
-	 * 
-	 * @param source -
-	 *            a string
-	 * @return a list of all the words from the input string, except the stop
-	 *         words
+	 * Removes stop words (defined in the listOfStopWords list),
+	 * if any, from the input string.
+	 * @param source - a string
+	 * @return a list of all the words from the input string,
+	 * except the stop words
 	 */
 	public List<String> removeStopWords(String source) {
 		String[] words = source.split(" ");
@@ -61,8 +59,8 @@ public class TextPreprocessing {
 	}
 
 	/**
-	 * Applies Porter's Stemming Algorithm to the input set of strings
-	 * 
+	 * Applies Porter's Stemming Algorithm to the input set of strings.
+	 * @param source - the input set of words
 	 * @return the content of that set of words, now stemmed
 	 */
 	public List<String> applyPorterStemmer(List<String> source) {
@@ -90,25 +88,31 @@ public class TextPreprocessing {
 	}
 
 	/**
-	 * Loads the list of stop words from the input file path
+	 * Loads the list of stop words .
 	 * @param filePath - the file path to the list
 	 */
+	/**
+     * Loads a list of stop words from the input file path
+     * so that they can be removed thereafter by the function
+     * <code>removeStopWords(String source)</code>.
+     * The file must have <i>only one word</i> per line.
+     * @param filePath - the file path string
+     * @return true if loaded successfully, false otherwise
+     */
+
 	public void loadListOfStopWords(String filePath) {
 		try {
-			// Open the file that is the first
-			// command line parameter
-			FileInputStream fstream = new FileInputStream(filePath);
-			// Get the object of DataInputStream
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			String strLine;
-			// Read File Line By Line
-			while ((strLine = br.readLine()) != null) {
-				// Print the content on the console
-				// System.out.println (strLine);
-				listOfStopWords.add(strLine);
+			// open the file using the path defined in filePath parameter
+			FileInputStream fileInputStream = new FileInputStream(filePath);
+			// get the object of DataInputStream
+			DataInputStream in = new DataInputStream(fileInputStream);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+			String stringLine;
+			// read the file line by line
+			while ((stringLine = bufferedReader.readLine()) != null) {
+				listOfStopWords.add(stringLine.trim());
 			}
-			// Close the input stream
+			// close the input stream
 			in.close();
 		} catch (FileNotFoundException e) {
 			System.err.println("Error: " + e.getMessage());
@@ -120,7 +124,7 @@ public class TextPreprocessing {
 	}
 	
 	/**
-	 * Executes text preprocessing with the input string text
+	 * Executes text preprocessing with the input string text.
 	 * @param text - the text to be preprocessed 
 	 * @return the terms obtained by text preprocessing
 	 */

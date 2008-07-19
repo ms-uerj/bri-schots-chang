@@ -11,6 +11,11 @@ import br.ufrj.cos.disciplina.bri.model.Record;
 
 public class PrecisionRecallMySQL {
 
+	/**
+	 * Reads data from XML files and calculates
+	 * precision-recall for the searches.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		//TestConnection connection = new TestConnection();
@@ -37,6 +42,7 @@ public class PrecisionRecallMySQL {
 		listOfQueries.addAll(Query.parseQueryFromXML("resources/inputs/cfquery-corrigido.xml"));
 		
 		List<Point> listOfPoints = new ArrayList<Point>();
+		
 		for (int k = 0; k < 11; k++) {
 			listOfPoints.add(new Point(k, 0.0));
 		}

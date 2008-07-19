@@ -13,7 +13,8 @@ import br.ufrj.cos.disciplina.bri.persistence.JPAResourceBean;
 public class LoadData {
 
 	/**
-	 * Read data from XML files and populate the database.
+	 * Reads data from XML files and populate the database.
+	 * @param args
 	 */
 	public static void main(String[] args) {
 		//TestConnection connection = new TestConnection();
@@ -57,7 +58,5 @@ public class LoadData {
 		} finally {
 			em.close();
 		}
-
 	}
-
 }
