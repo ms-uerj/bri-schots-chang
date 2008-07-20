@@ -13,7 +13,7 @@ import br.ufrj.cos.disciplina.bri.model.Stemmer;
 
 public class TextPreprocessing {
 
-	public List<String> listOfStopWords;
+	private List<String> listOfStopWords;
 
 	/**
 	 * Default constructor method 
@@ -23,21 +23,28 @@ public class TextPreprocessing {
 	}
 
 	/**
-	 * Removes all special characters from the input string, if any.
+	 * Removes all the non-letter characters from the input string, if any.
+	 * Also removes excessive whitespace occurrences (when there's one or more
+	 * whitespace adjacent to another whitespace).
 	 * @param source - a string
-	 * @return the content of the input string without special characters
+	 * @return the content of the input string with only letter and whitespace characters
 	 */
-	public String removeSpecialCharacters(String source) {
-		// replaces all the "non-letter" characters by a whitespace
-		source = source.replaceAll("[^a-zA-Z]"," ");
+	public String removeNonLetterCharacters(String source) {
+		String result = source;
+		// replaces all non-letter characters by a whitespace
+		result = result.replaceAll("[^a-zA-Z]"," ");
 		// removes excessive whitespace occurrences
-		source = source.replaceAll("[ ]+"," ");
-		return source;
+		result = result.replaceAll("[ ]+"," ");
+		return result;
 	}
 
 	/**
 	 * Removes stop words (defined in the listOfStopWords list),
 	 * if any, from the input string.
+	 * A list of stop words must be loaded by the function
+	 * <code>loadListOfStopWords(String filePath)</code>
+	 * before calling this method, otherwise there will be
+	 * no stop word removed from the input string.
 	 * @param source - a string
 	 * @return a list of all the words from the input string,
 	 * except the stop words
@@ -46,7 +53,6 @@ public class TextPreprocessing {
 		String[] words = source.split(" ");
 
 		List<String> listOfWords = new Vector<String>();
-		// ((Vector<String>) listOfWords).copyInto(words);
 
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i].toUpperCase();
@@ -71,17 +77,17 @@ public class TextPreprocessing {
 			String wordString = source.get(i);
 			// the stemming algorithm works with arrays of chars
 			char[] word = wordString.toCharArray();
+			// adding char by char to the stemmer
 			for (int pos = 0; pos < word.length; pos++) {
 				// the stemming algorithm works with lower-case letters
+				// so 
 				stemmer.add(Character.toLowerCase(word[pos]));
 			}
 			// calling the stemming algorithm
 			stemmer.stem();
-
+			// converting the stemming result (an array of char) to string
 			String resultString = stemmer.toString();
-
-			// undoing the lower-case conversion (supposing that letters were
-			// all upper-case)
+			// adding to the result string, reversing the lower-case conversion
 			result.add(resultString.toUpperCase());
 		}
 		return result;
@@ -125,20 +131,20 @@ public class TextPreprocessing {
 	
 	/**
 	 * Executes text preprocessing with the input string text.
-	 * @param text - the text to be preprocessed 
+	 * @param sourceText - the text to be preprocessed 
 	 * @return the terms obtained by text preprocessing
 	 */
-	public static List<String> preProcessText(String text) {
+	public static List<String> preProcessText(String sourceText) {
 		
 		TextPreprocessing textProcessor = new TextPreprocessing();
 		textProcessor.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
 		
-		if (text == null) {
-			text = "";
+		if (sourceText == null) {
+			sourceText = "";
 		}
 		
-		String tempText = text.toUpperCase();
-		tempText = textProcessor.removeSpecialCharacters(tempText);			
+		String tempText = sourceText.toUpperCase();
+		tempText = textProcessor.removeNonLetterCharacters(tempText);			
 		List<String> tempOriginal = textProcessor.removeStopWords(tempText);
 		List<String> terms = textProcessor.applyPorterStemmer(tempOriginal);
 		
