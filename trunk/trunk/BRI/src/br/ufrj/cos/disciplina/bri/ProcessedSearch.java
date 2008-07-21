@@ -48,17 +48,8 @@ public class ProcessedSearch {
 		String term;
 
 		// populate hash table with records terms (titles)
-		// TODO: repetir processo para abstract 
 		for (Iterator<Record> iteratorRecord = listOfRecords.iterator(); iteratorRecord.hasNext();) {
-
 			Record record = iteratorRecord.next();
-
-			// System.out.println(record.getId());
-			// System.out.println("title: "+record.getTitle());
-			// System.out.println("terms title: "+record.getTitleTerms());
-			// System.out.println("abztract: "+record.getAbztract());
-			// System.out.println("terms title: "+record.getAbztractTerms());
-
 			for (Iterator<String> iteratorTermsTitle = record.getTitleTerms()
 					.iterator(); iteratorTermsTitle.hasNext();) {
 				term = iteratorTermsTitle.next();
@@ -67,21 +58,23 @@ public class ProcessedSearch {
 			}
 		}
 		
-		
+		// populate hash table with records terms (abstracts)
+		for (Iterator<Record> iteratorRecord = listOfRecords.iterator(); iteratorRecord.hasNext();) {
+			Record record = iteratorRecord.next();
+			for (Iterator<String> iteratorTermsAbztract = record.getAbztractTerms()
+					.iterator(); iteratorTermsAbztract.hasNext();) {
+				term = iteratorTermsAbztract.next();
+				indexingRecords.addToHash(term, new RadixInfo(record.getId(),
+						record.getTfOnAbztract(term), "abstract"));
+			}
+		}
 		
 		for (Iterator<Query> iteratorQuery = listOfQueries.iterator(); iteratorQuery.hasNext();) {
-
 			Query query = iteratorQuery.next();
-
-			// System.out.println(query.getId());
-			// System.out.println("question: "+query.getQuestion());
-			// System.out.println("terms question: "+query.getQuestionsTerms());
-
 			// search each query on records Indexing using
 			// logic "OR" between terms and similarity between vectors
 			VectorSearch search = new VectorSearch();
-			search.vectorSearch(query.getQuestionsTerms(), indexingRecords, listOfRecords.size());
-			
+			search.vectorSearch(query.getQuestionsTerms(), indexingRecords, listOfRecords.size());	
 		}
 		System.out.println("End");
 	}

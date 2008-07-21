@@ -8,31 +8,32 @@ import br.ufrj.cos.disciplina.bri.algorithm.TextPreprocessing;
 
 public class TestTextProcessing {
 
+	/**
+	 * Tests text preprocessing.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		String string = new String("The quick brown fox jumps over the lazy dog mating ocurring");
 		
-		List<String> tempOriginal = new Vector<String>();
-		List<String> tempResultante;
+		List<String> temporaryListOfTerms = new Vector<String>();
 		
-		TextPreprocessing classe = new TextPreprocessing();
-		classe.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
+		TextPreprocessing textProcessor = new TextPreprocessing();
+		textProcessor.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
 		
-		tempOriginal = classe.removeStopWords(string);
+		temporaryListOfTerms = textProcessor.removeStopWords(string);
 		
-		System.out.println("Pós-Stop Words:");
-		for (Iterator<String> iterator = tempOriginal.iterator(); iterator.hasNext();) {
-			String temp = (String) iterator.next();
-			System.out.println(temp);
+		System.out.println("After stop words removing:");
+		for (Iterator<String> iterator = temporaryListOfTerms.iterator(); iterator.hasNext();) {
+			String term = (String) iterator.next();
+			System.out.println(term);
 		}
 		
-		tempResultante = classe.applyPorterStemmer(tempOriginal);
+		List<String> resultingListOfTerms = textProcessor.applyPorterStemmer(temporaryListOfTerms);
 		
-		System.out.println("Pós-Porter:");
-		for (Iterator<String> iterator = tempResultante.iterator(); iterator.hasNext();) {
-			String temp = (String) iterator.next();
-			System.out.println(temp);
+		System.out.println("After Porter stemming:");
+		for (Iterator<String> iterator = resultingListOfTerms.iterator(); iterator.hasNext();) {
+			String term = (String) iterator.next();
+			System.out.println(term);
 		}
-
 	}
-
 }

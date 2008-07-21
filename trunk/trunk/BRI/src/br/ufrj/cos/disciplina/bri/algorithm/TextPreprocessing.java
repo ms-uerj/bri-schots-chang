@@ -16,7 +16,7 @@ public class TextPreprocessing {
 	private List<String> listOfStopWords;
 
 	/**
-	 * Default constructor method 
+	 * Default constructor method.
 	 */
 	public TextPreprocessing() {
 		listOfStopWords = new Vector<String>();
@@ -39,9 +39,9 @@ public class TextPreprocessing {
 	}
 
 	/**
-	 * Removes stop words (defined in the listOfStopWords list),
+	 * Removes stop words (defined in the list of stop words),
 	 * if any, from the input string.
-	 * A list of stop words must be loaded by the function
+	 * A list of stop words <i>must</i> be loaded by the method
 	 * <code>loadListOfStopWords(String filePath)</code>
 	 * before calling this method, otherwise there will be
 	 * no stop word removed from the input string.
@@ -56,7 +56,7 @@ public class TextPreprocessing {
 
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i].toUpperCase();
-			// this algorithm is not (yet?) considering composite terms
+			// this algorithm is not considering composite terms
 			if (!listOfStopWords.contains(word)) {
 				listOfWords.add(word);
 			}
@@ -80,7 +80,7 @@ public class TextPreprocessing {
 			// adding char by char to the stemmer
 			for (int pos = 0; pos < word.length; pos++) {
 				// the stemming algorithm works with lower-case letters
-				// so 
+				// so it's necessary to convert letters to lower-case
 				stemmer.add(Character.toLowerCase(word[pos]));
 			}
 			// calling the stemming algorithm
@@ -94,18 +94,13 @@ public class TextPreprocessing {
 	}
 
 	/**
-	 * Loads the list of stop words .
-	 * @param filePath - the file path to the list
-	 */
-	/**
      * Loads a list of stop words from the input file path
-     * so that they can be removed thereafter by the function
+     * so that these words can be removed thereafter by the method
      * <code>removeStopWords(String source)</code>.
      * The file must have <i>only one word</i> per line.
-     * @param filePath - the file path string
+     * @param filePath - the file path to the list
      * @return true if loaded successfully, false otherwise
      */
-
 	public void loadListOfStopWords(String filePath) {
 		try {
 			// open the file using the path defined in filePath parameter
@@ -135,20 +130,17 @@ public class TextPreprocessing {
 	 * @return the terms obtained by text preprocessing
 	 */
 	public static List<String> preProcessText(String sourceText) {
-		
 		TextPreprocessing textProcessor = new TextPreprocessing();
 		textProcessor.loadListOfStopWords("resources/stopwords/english.stopwords.txt");
-		
 		if (sourceText == null) {
 			sourceText = "";
 		}
-		
 		String tempText = sourceText.toUpperCase();
 		tempText = textProcessor.removeNonLetterCharacters(tempText);			
-		List<String> tempOriginal = textProcessor.removeStopWords(tempText);
-		List<String> terms = textProcessor.applyPorterStemmer(tempOriginal);
+		List<String> tempListofTerms = textProcessor.removeStopWords(tempText);
+		List<String> listOfTerms = textProcessor.applyPorterStemmer(tempListofTerms);
 		
-		return terms;
+		return listOfTerms;
 	}
 	
 }

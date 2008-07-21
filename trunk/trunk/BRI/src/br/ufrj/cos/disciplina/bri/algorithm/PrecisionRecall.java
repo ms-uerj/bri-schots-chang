@@ -38,9 +38,9 @@ public class PrecisionRecall {
 			queryString = "SELECT *"
 				+ " FROM record WHERE MATCH (" + campoConsulta
 				+ ") AGAINST ('" + query.getQuestion() +"'";
-			if(searchType.equals(PrecisionRecall.TYPE_QUERY_BOOLEAN)){
+			if(searchType.equals(PrecisionRecall.TYPE_QUERY_BOOLEAN)) {
 				queryString += " IN BOOLEAN MODE)"; 
-			} else if (searchType.equals(PrecisionRecall.TYPE_QUERY_NATURAL)){
+			} else if (searchType.equals(PrecisionRecall.TYPE_QUERY_NATURAL)) {
 				queryString += ")";
 			} else if (searchType.equals(PrecisionRecall.TYPE_QUERY_NATURAL_EXT)) {
 				queryString += " WITH QUERY EXPANSION)";
@@ -75,20 +75,19 @@ public class PrecisionRecall {
 	}
 	
 	/**
-	 * Calculates precision and recall values and groups
+	 * Calculates precision-recall values and groups
 	 * each precision-recall pair in a point object.
 	 * @param relevants - the list of relevant terms
 	 * @param answers - the list of answers obtained from a given search
 	 * @return a list of points (precision, recall)
 	 */
-	public static List<Point> getPrecisionRecall(List<Integer> relevants, List<Integer> answers){
+	public static List<Point> getPrecisionRecall(List<Integer> relevants, List<Integer> answers) {
 		List<Point> listOfPoints = new ArrayList<Point>();
 		
 		int sizeRelevants = relevants.size();
 		
-		// number of elements returned by the search that are relevants
-		// TODO variable in portuguese!
-		double numElementosComum = 0;
+		// number of elements returned by the search AND are relevants
+		double numberOfRelevantsReturnedElements = 0;
 		
 		// recall
 		List<Double> recalls = new ArrayList<Double>();
@@ -96,23 +95,23 @@ public class PrecisionRecall {
 		double recall;
 		for (int i = 0; i < relevants.size(); i++) {
 			if (answers.contains(relevants.get(i))) {
-				numElementosComum++;
-				recall = numElementosComum/sizeRelevants;
+				numberOfRelevantsReturnedElements++;
+				recall = numberOfRelevantsReturnedElements/sizeRelevants;
 				recalls.add(recall);
 			}
 		}
 		
 		// reseting variable to a new iteration
-		numElementosComum = 0;
+		numberOfRelevantsReturnedElements = 0;
 		
 		//precision
 		List<Double> precisions = new ArrayList<Double>();
 		
 		double precision;
 		for (int j = 0; j < answers.size(); j++) {
-			if(relevants.contains(answers.get(j))){
-				numElementosComum++;
-				precision = numElementosComum/(j+1);
+			if(relevants.contains(answers.get(j))) {
+				numberOfRelevantsReturnedElements++;
+				precision = numberOfRelevantsReturnedElements/(j+1);
 				precisions.add(precision);
 			}
 		}

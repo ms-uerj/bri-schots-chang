@@ -12,7 +12,7 @@ public class Stemmer {
 	private static final int INC = 50; // unit of size whereby b is increased
 
 	/**
-	 * Default constructor method
+	 * Default constructor method.
 	 */
 	public Stemmer() {
 		word = new char[INC];
@@ -36,7 +36,8 @@ public class Stemmer {
 		word[i++] = character;
 	}
 
-	/** Adds wLen characters to the word being stemmed contained in a portion
+	/**
+	 * Adds wLen characters to the word being stemmed contained in a portion
 	 * of a char[] array. This is like repeated calls of add(char character), but
 	 * faster.
 	 */
@@ -64,7 +65,7 @@ public class Stemmer {
 	}
 
 	/**
-	 * @return the length of the word resulting from the stemming process.
+	 * @return the length of the word resulting from the stemming process
 	 */
 	public int getResultLength() {
 		return i_end;
@@ -74,15 +75,13 @@ public class Stemmer {
 	 * @return a reference to a character buffer containing the results of
 	 * the stemming process. You also need to consult getResultLength()
 	 * to determine the length of the result.
-	 * 
 	 */
 	public char[] getResultBuffer() {
 		return word;
 	}
 
 	/**
-	 * @return true if, and only if, b[i] is a consonant.
-	 *
+	 * @return true if, and only if, b[i] is a consonant
 	 */
 	private final boolean cons(int i) {
 		switch (word[i]) {
@@ -99,14 +98,15 @@ public class Stemmer {
 		}
 	}
 
-	/** Measures the number of consonant sequences between 0 and j. if c is
+	/**
+	 * Measures the number of consonant sequences between 0 and j. if c is
 	 * a consonant sequence and v a vowel sequence, and <..> indicates arbitrary
 	 * presence,
 	 * <c><v>       gives 0
 	 * <c>vc<v>     gives 1
 	 * <c>vcvc<v>   gives 2
 	 * <c>vcvcvc<v> gives 3
-	 * ....
+	 * ...
 	 */
 	private final int m() {
 		int n = 0;
@@ -146,7 +146,9 @@ public class Stemmer {
 		}
 	}
 
-	/** @return true if, and only if, 0,...j contains a vowel */
+	/**
+	 * @return true if, and only if, 0,...j contains a vowel
+	 */
 	private final boolean vowelinstem() {
 		int i;
 		for (i = 0; i <= j; i++) {
@@ -157,8 +159,10 @@ public class Stemmer {
 		return false;
 	}
 
-	/** @return true if, and only if, j,(j-1) contain a double consonant. */
-	private final boolean doublec(int j){
+	/**
+	 * @return true if, and only if, j,(j-1) contain a double consonant
+	 */
+	private final boolean doublec(int j) {
 		if (j < 1) {
 			return false;
 		}
@@ -168,10 +172,13 @@ public class Stemmer {
 		return cons(j);
 	}
 
-	/** cvc(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
-	 * and also if the second c is not w,x or y. this is used when trying to
-	 * restore an e at the end of a short word. e.g.
-	 * cav(e), lov(e), hop(e), crim(e), but snow, box, tray.
+	/**
+	 * cvc(i) is true if, and only if, i-2,i-1,i has the form
+	 * consonant - vowel - consonant
+	 * and also if the second c is not w, x or y.
+	 * This is used when trying to restore an e
+	 * at the end of a short word.
+	 * e.g. cav(e), lov(e), hop(e), crim(e), but snow, box, tray.
 	 */
 	private final boolean cvc(int i) {
 		if (i < 2 || !cons(i) || cons(i-1) || !cons(i-2)) {
@@ -205,7 +212,10 @@ public class Stemmer {
 		return true;
 	}
 
-	/** Sets (j+1),...k to the characters in the string s, readjusting k. */
+	/**
+	 * Sets (j+1),...k to the characters in the string s,
+	 * readjusting k.
+	 */
 	private final void setTo(String s) {
 		int l = s.length();
 		int o = j+1;
@@ -215,15 +225,18 @@ public class Stemmer {
 		k = j+l;
 	}
 
-	// TODO make a real comment!!!
-	/** r(s) is used further down. */
+	/**
+	 * r(s) replaces the portion of an array of char
+	 * by the input string s.
+	 */
 	private final void r(String s) {
 		if (m() > 0) {
 			setTo(s);
 		}
 	}
 
-	/** step1() gets rid of plurals and -ed or -ing.
+	/**
+	 * step1() gets rid of plurals and -ed or -ing.
 	 * e.g.<br/>
 	 * <br/>
 	 * caresses  ->  caress<br/>
@@ -241,8 +254,7 @@ public class Stemmer {
 	 * messing   ->  mess<br/>
 	 * meetings  ->  meet
 	 */
-	private final void step1()
-	{
+	private final void step1() {
 		if (word[k] == 's') {
 			if (ends("sses")) {
 				k -= 2;
@@ -254,7 +266,7 @@ public class Stemmer {
 		}
 		if (ends("eed")) {
 			if (m() > 0) k--; 
-		} else if ((ends("ed") || ends("ing")) && vowelinstem()){  
+		} else if ((ends("ed") || ends("ing")) && vowelinstem()) {  
 			k = j;
 			if (ends("at")) {
 				setTo("ate");
@@ -266,7 +278,7 @@ public class Stemmer {
 				k--;
 				{
 					int ch = word[k];
-					if (ch == 'l' || ch == 's' || ch == 'z'){
+					if (ch == 'l' || ch == 's' || ch == 'z') {
 						k++;
 					}
 				}
@@ -277,16 +289,21 @@ public class Stemmer {
 		}
 	}
 
-	/** step2() turns terminal y to i when there is another vowel in the stem. */
+	/**
+	 * step2() turns terminal y to i when
+	 * there is another vowel in the stem.
+	 */
 	private final void step2() {
 		if (ends("y") && vowelinstem()) {
 			word[k] = 'i'; 
 		}
 	}
 
-	/** step3() maps double suffices to single ones.
+	/**
+	 * step3() maps double suffices to single ones.
 	 * So -ization ( = -ize plus -ation) maps to -ize etc.
-	 * Note that the string before the suffix must give m() > 0. */
+	 * Note that the string before the suffix must give m() > 0.
+	 */
 	private final void step3() {
 		if (k == 0) {
 			return;
@@ -393,9 +410,12 @@ public class Stemmer {
 		} 
 	}
 
-	/** step4() deals with -ic-, -full, -ness etc. similar strategy to step3. */
+	/**
+	 * step4() deals with -ic-, -full, -ness etc.
+	 * Similar strategy to step3.
+	 */
 	private final void step4() {
-		switch (word[k])	   {
+		switch (word[k]) {
 		case 'e': 
 			if (ends("icate")) {
 				r("ic");
@@ -429,7 +449,9 @@ public class Stemmer {
 		}
 	}
 
-	/** step5() takes off -ant, -ence etc., in context <c>vcvc<v>. */
+	/**
+	 * step5() takes off -ant, -ence etc., in context <c>vcvc<v>.
+	 */
 	private final void step5() {
 		if (k == 0) {
 			return;
@@ -476,7 +498,7 @@ public class Stemmer {
 			if (ends("ment")) {
 				break;
 			}
-			/* element etc. not stripped before the m */
+			// element etc. not stripped before the m
 			if (ends("ent")) {
 				break;
 			}
@@ -489,7 +511,7 @@ public class Stemmer {
 				break;
 			}
 			return;
-			/* takes care of -ous */
+			// takes care of -ous
 		case 's':
 			if (ends("ism")) {
 				break;
@@ -526,7 +548,9 @@ public class Stemmer {
 		}
 	}
 
-	/** step6() removes a final -e if m() > 1. */
+	/**
+	 * step6() removes a final -e if m() > 1.
+	 */
 	private final void step6() {
 		j = k;
 		if (word[k] == 'e') {
@@ -540,9 +564,10 @@ public class Stemmer {
 		}
 	}
 
-	/** Stem the word placed into the Stemmer buffer through calls to add().
+	/**
+	 * Stem the word placed into the Stemmer buffer through calls to add().
 	 * Returns true if the stemming process resulted in a word different
-	 * from the input.  You can retrieve the result with
+	 * from the input. You can retrieve the result with
 	 * getResultLength()/getResultBuffer() or toString().
 	 */
 	public void stem() {

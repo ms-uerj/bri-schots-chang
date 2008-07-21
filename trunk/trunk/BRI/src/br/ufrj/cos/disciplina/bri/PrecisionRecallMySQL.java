@@ -13,7 +13,7 @@ public class PrecisionRecallMySQL {
 
 	/**
 	 * Reads data from XML files and calculates
-	 * precision-recall for the searches.
+	 * precision-recall values for the searches.
 	 * @param args
 	 */
 	public static void main(String[] args) {

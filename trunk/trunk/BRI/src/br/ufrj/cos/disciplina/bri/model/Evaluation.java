@@ -17,7 +17,7 @@ public class Evaluation {
 	private int recordId;
 
 	/**
-	 * Default constructor method
+	 * Default constructor method.
 	 */
 	public Evaluation() {
 

@@ -45,7 +45,7 @@ public class Record {
 	private List<String> abztractTerms;
 	
 	/**
-	 * Default constructor method
+	 * Default constructor method.
 	 */
 	public Record() {
 		titleTerms = new ArrayList<String>();
@@ -53,7 +53,7 @@ public class Record {
 	}
 
 	/**
-	 * Optional constructor method
+	 * Optional constructor method.
 	 * @param id - the record id to set
 	 * @param title - the record title to set
 	 * @param abztract - the record abstract to set
@@ -172,12 +172,12 @@ public class Record {
 	}
 
 	/**
-	  * Parses the records from a XML node
+	  * Parses the records from a XML node.
 	  * @param filePath - the XML file path
 	  * @return the list of records
 	 */
 	public static List<Record> parseRecordFromXML(String filePath) {
-		List<Record> listaRecords = new ArrayList<Record>();
+		List<Record> listOfRecords = new ArrayList<Record>();
 
 		// objects requires for XML reading
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -185,21 +185,21 @@ public class Record {
 		Document myDoc;
 
 		// XML node (records) list
-		NodeList listRecords;
+		NodeList nodeListOfRecords;
 
 		try {
 			db = dbf.newDocumentBuilder();
 			myDoc = db.parse(new File(filePath));
 			// query list initialization
-			listRecords = myDoc.getElementsByTagName("RECORD");
+			nodeListOfRecords = myDoc.getElementsByTagName("RECORD");
 
-			for (int i = 0; i < listRecords.getLength(); i++) {
+			for (int i = 0; i < nodeListOfRecords.getLength(); i++) {
 
 				// instantiate the record object
 				Record record = new Record();
 
 				// capture the record node and its content
-				Node nodeRecord = listRecords.item(i);
+				Node nodeRecord = nodeListOfRecords.item(i);
 
 				NodeList recordContents = nodeRecord.getChildNodes();
 
@@ -226,7 +226,7 @@ public class Record {
 						record.setAbztractTerms(TextPreprocessing.preProcessText(tempAbztract));
 					}
 				}
-				listaRecords.add(record);
+				listOfRecords.add(record);
 			}
 		} catch (SAXException e) {
 			System.err.println("Error: " + e.getMessage());
@@ -238,12 +238,13 @@ public class Record {
 			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return listaRecords;
+		return listOfRecords;
 	}
 	
 	/**
-	 * TODO correct comment
-	 * Número de ocorrências do termo no título
+	 * Calculates term frequency on TITLE field.
+	 * @param term - the term whose frequency will be verified
+	 * @return the term frequency on TITLE field
 	 */
 	public double getTfOnTitle(String term) {
 		double counter = 0;
@@ -257,10 +258,10 @@ public class Record {
 	}
 	
 	/**
-	 * TODO correct comment
-	 * Número de ocorrências do termo no abstract
+	 * Calculates term frequency on ABSTRACT field.
+	 * @param term - the term whose frequency will be verified
+	 * @return the term frequency on ABSTRACT field
 	 */
-	
 	public double getTfOnAbztract(String term) {
 		double counter = 0;
 		if (abztractTerms.contains(term)) {
@@ -271,5 +272,4 @@ public class Record {
 		}
 		return (counter / abztractTerms.size());
 	}
-	
 }
