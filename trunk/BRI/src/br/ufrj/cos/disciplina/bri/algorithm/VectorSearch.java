@@ -83,6 +83,9 @@ public class VectorSearch {
 			Map.Entry e = (Map.Entry)rankingIterator.next();
 			result.add((Integer)e.getKey());
 		}
+		
+		System.out.println("Consulta: " + result);
+		
 		return result;
 	}
 	
