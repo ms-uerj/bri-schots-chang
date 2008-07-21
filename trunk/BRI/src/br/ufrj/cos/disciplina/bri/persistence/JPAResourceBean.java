@@ -7,14 +7,14 @@ import javax.persistence.Persistence;
 
     protected EntityManagerFactory emf;
 
-    /*
+    /**
      * Lazily acquire the EntityManagerFactory and cache it.
      */
-     public EntityManagerFactory getEMF (String persistenceUnit){
-        if (emf == null){
+     @SuppressWarnings("unchecked")
+	public EntityManagerFactory getEMF(String persistenceUnit) {
+        if (emf == null) {
             emf = Persistence.createEntityManagerFactory(persistenceUnit, new java.util.HashMap());
         }
         return emf;
-        
     }
 }

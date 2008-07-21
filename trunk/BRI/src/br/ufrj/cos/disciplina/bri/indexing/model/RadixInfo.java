@@ -12,7 +12,7 @@ public class RadixInfo {
 	private String part;
 
 	/**
-	 * Constructor method
+	 * Default constructor method.
 	 * @param documentId - indicates what document contains the radix
 	 * @param numberOfOccurrences - show the number of occurrences of the radix in the document 
 	 */

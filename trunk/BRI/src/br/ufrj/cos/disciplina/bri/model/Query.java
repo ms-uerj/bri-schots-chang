@@ -38,7 +38,7 @@ public class Query {
 	private Set<String> questionsTerms;
 
 	/**
-	 * Default constructor method
+	 * Default constructor method.
 	 */
 	public Query() {
 		questionsTerms = new HashSet<String>();
@@ -51,7 +51,6 @@ public class Query {
 		return id;
 	}
 
-	
 	/**
 	 * @param id - the id to set
 	 */
@@ -67,7 +66,6 @@ public class Query {
 	}
 
 	/**
-	 * Sets the question to the input string value
 	 * @param question - the question to set
 	 */
 	public void setQuestion(String question) {
@@ -89,7 +87,7 @@ public class Query {
 	}
 
 	/**
-	 * Parses the queries from a XML file
+	 * Parses the queries from a XML file.
 	 * @param filePath - the XML file path
 	 * @return the list of queries
 	 */
@@ -155,7 +153,7 @@ public class Query {
 	}
 
 	/**
-	 * Parses evaluation values from a XML node
+	 * Parses evaluation values from a XML node.
 	 * @param node - the node to be explored
 	 * @return the list of evaluations
 	 */
@@ -175,8 +173,8 @@ public class Query {
 
 			// capture the evaluation node and its content
 			Node nodeEvaluation = listOfRecords.item(i);
-			//System.out.println("name" + nodeEvaluation.getNodeName());
-			//System.out.println("value" + nodeEvaluation.getNodeValue());
+			//System.out.println("Name" + nodeEvaluation.getNodeName());
+			//System.out.println("Value" + nodeEvaluation.getNodeValue());
 
 			if (nodeEvaluation.getNodeName().equals("Item")) {
 				evaluation.setRecordId(Integer.parseInt(nodeEvaluation.getFirstChild()
@@ -188,7 +186,6 @@ public class Query {
 		}
 		return listOfEvaluations;
 	}
-	
 	
 	/**
 	 * @param questionsTerms - a set with the question terms to set
